@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32dcde829cc493549a6e405cd4fc8179, type: 3}
+  m_Name: NodeGraphSettings
+  m_EditorClassIdentifier: 
+  behaviourTreeXml: {fileID: 9197481963319205126, guid: cacadc88cc6f94e11877d53587f83a7b,
+    type: 3}
+  behaviourTreeStyle: {fileID: 7433441132597879392, guid: 42dc9e6fa1d42490eaf16b48d87417d1,
+    type: 3}
+  nodeXml: {fileID: 9197481963319205126, guid: 3cd9dd31fc37848e68a4bef93c265c7d, type: 3}
+  newNodeBasePath: Assets/

@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/UI/BehaviourTree.uss?fileID=7433441132597879392&amp;guid=42dc9e6fa1d42490eaf16b48d87417d1&amp;type=3#BehaviourTree" />
+    <Lyred.RootView name="RootView" style="flex-grow: 1;">
+        <uie:Toolbar>
+            <uie:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" text="Assets" />
+        </uie:Toolbar>
+        <Lyred.SplitView fixed-pane-initial-dimension="226" style="background-color: rgba(255, 0, 0, 0);">
+            <ui:VisualElement name="left-panel" style="flex-grow: 1; background-color: rgba(221, 5, 5, 0);">
+                <ui:Label tabindex="-1" text="Inspector" display-tooltip-when-elided="true" />
+                <Lyred.SplitView orientation="Vertical" fixed-pane-initial-dimension="300">
+                    <ui:VisualElement name="upper-panel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                        <Lyred.InspectorView />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="lower-panel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                        <ui:Label tabindex="-1" text="Blackboard" display-tooltip-when-elided="true" />
+                        <Lyred.BlackboardGraphView style="flex-grow: 1;" />
+                    </ui:VisualElement>
+                </Lyred.SplitView>
+            </ui:VisualElement>
+            <ui:VisualElement name="right-panel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                <ui:Label tabindex="-1" text="View" display-tooltip-when-elided="true" />
+                <Lyred.NodeGraphView focusable="true" name="NodeGraphView" style="flex-grow: 1;" />
+            </ui:VisualElement>
+        </Lyred.SplitView>
+    </Lyred.RootView>
+</ui:UXML>

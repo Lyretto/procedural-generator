@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/UI/Node/NodeViewStyle.uss?fileID=7433441132597879392&amp;guid=490701bbda50049be8b71b565be9981e&amp;type=3#NodeViewStyle" />
+    <ui:VisualElement name="node-state" />
+    <ui:VisualElement name="node-border" style="flex-grow: 0;">
+        <ui:VisualElement name="contents" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+            <ui:VisualElement name="top" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                <ui:VisualElement name="input" style="flex-grow: 1; display: flex;" />
+                <ui:VisualElement name="divider" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+                <ui:VisualElement name="content" style="background-color: rgba(0, 0, 0, 0);">
+                    <ui:Label tabindex="-1" text="SequencerNode" name="title" />
+                    <ui:VisualElement name="title-button-container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                        <ui:VisualElement name="collapse-button" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                            <ui:VisualElement name="icon" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="description" />
+                </ui:VisualElement>
+                <ui:VisualElement name="divider" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+                <ui:VisualElement name="output" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="selection-border" picking-mode="Ignore" style="top: 0; right: 0; left: 0; bottom: 0;" />
+</ui:UXML>
