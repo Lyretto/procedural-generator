@@ -7,20 +7,32 @@ namespace Lyred
     [Serializable]
     public class NodeSlot : IDisposable
     {
-        [SerializeReference]
+        [HideInInspector] [SerializeReference]
         public string guid;
-        [SerializeReference]
-        public string parentGuid;
-        private string name;
-        private Type slotType;
+        [HideInInspector] [SerializeReference]
+        public string name;
+        public Type SlotType;
+        [HideInInspector] [SerializeReference]
+        public Node node;
+        [HideInInspector] [SerializeReference]
+        public NodeSlot parentNodeSlot;
+        public object defaultValue;
 
-
-
-        public NodeSlot(string portGuid, string displayName, Type type)
+        public object InvokeNode()
         {
-            guid = portGuid;
+            return parentNodeSlot?.node.Result();
+        }
+        
+        public NodeSlot(Node node, string displayName, Type type)
+        {
+            this.node = node;
             name = displayName;
-            slotType = type;
+            SlotType = type;
+        }
+
+        public void AddParent(NodeSlot parent)
+        {
+            parentNodeSlot = parent;
         }
         
         public void Dispose()

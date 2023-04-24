@@ -26,20 +26,27 @@ namespace Lyred
             nodes.Add(rootNode);
         }
 
-        public Node.State Update() {
-            if (rootNode.state == Node.State.Running) {
-                treeState = rootNode.Update();
-            }
-            return treeState;
+        public void Generate()
+        {
+            rootNode.Result();
         }
-        
+
         public static void Traverse(Node node, System.Action<Node> visiter)
         {
             if (node == null) return;
             
             visiter.Invoke(node);
             var children = node.inputPorts;
-            children.ForEach(n=> Traverse(n.ConnectedNode, visiter));
+            children.ForEach(n=> Traverse(n.parentNodeSlot?.node, visiter));
+        }
+        
+        public static void TraverseChildren(Node node, System.Action<Node> visiter)
+        {
+            if (node == null) return;
+            
+            visiter.Invoke(node);
+            var children = node.outputPorts;
+            children.ForEach(n=> Traverse(n.parentNodeSlot?.node, visiter));
         }
 
         public NodeGraph Clone() {

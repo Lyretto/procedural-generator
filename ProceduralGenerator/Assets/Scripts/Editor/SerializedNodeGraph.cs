@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
@@ -6,19 +7,14 @@ namespace Lyred {
     {
         private readonly SerializedObject serializedObject;
         public readonly NodeGraph graph;
-        private const string sPropRootNode = "rootNode";
-        private const string sPropNodes = "nodes";
-        private const string sPropBlackboard = "blackboard";
-        private const string sPropGuid = "guid";
-        private const string sPropChild = "child";
         private const string sPropChildren = "children";
         private const string sPropPosition = "position";
         private const string sViewTransformPosition = "viewPosition";
         private const string sViewTransformScale = "viewScale";
 
-        public SerializedProperty RootNode => serializedObject.FindProperty(sPropRootNode);
-        public SerializedProperty Nodes => serializedObject.FindProperty(sPropNodes);
-        public SerializedProperty Blackboard => serializedObject.FindProperty(sPropBlackboard);
+        public SerializedProperty RootNode => serializedObject.FindProperty(nameof(RootNode).ToLower());
+        public SerializedProperty Nodes => serializedObject.FindProperty(nameof(Nodes).ToLower());
+        public SerializedProperty Blackboard => serializedObject.FindProperty(nameof(Blackboard).ToLower());
         
         public SerializedNodeGraph(NodeGraph graph)
         {
@@ -33,7 +29,7 @@ namespace Lyred {
         public static SerializedProperty FindNode(SerializedProperty array, Node node) {
             for(var i = 0; i < array.arraySize; ++i) {
                 var current = array.GetArrayElementAtIndex(i);
-                var guid = current.FindPropertyRelative(sPropGuid);
+                var guid = current.FindPropertyRelative(nameof(node.guid).ToLower());
                 if (guid.stringValue == node.guid) {
                     return current;
                 }
@@ -44,7 +40,7 @@ namespace Lyred {
         public void SetViewTransform(Vector3 position, Vector3 scale) {
             serializedObject.FindProperty(sViewTransformPosition).vector3Value = position;
             serializedObject.FindProperty(sViewTransformScale).vector3Value = scale;
-            serializedObject.ApplyModifiedPropertiesWithoutUndo();
+            serializedObject.ApplyModifiedProperties();
         }
 
         public void SetNodePosition(Node node, Vector2 position) {
@@ -56,7 +52,7 @@ namespace Lyred {
         private void DeleteNode(SerializedProperty array, Node node) {
             for (var i = 0; i < array.arraySize; ++i) {
                 var current = array.GetArrayElementAtIndex(i);
-                if (current.FindPropertyRelative(sPropGuid).stringValue != node.guid) continue;
+                if (current.FindPropertyRelative(nameof(node.guid).ToLower()).stringValue != node.guid) continue;
                 array.DeleteArrayElementAtIndex(i);
                 return;
             }
@@ -97,78 +93,47 @@ namespace Lyred {
 
             for(var i = 0; i < nodesProperty.arraySize; ++i) {
                 var prop = nodesProperty.GetArrayElementAtIndex(i);
-                var guid = prop.FindPropertyRelative(sPropGuid).stringValue;
+                var guid = prop.FindPropertyRelative(nameof(node.guid).ToLower()).stringValue;
                 DeleteNode(Nodes, node);
                 serializedObject.ApplyModifiedProperties();
             }
         }
-        public void AddChild(Node parent, Node child) {
-            
-            var parentProperty = FindNode(Nodes, parent);
 
-            // RootNode, Decorator node
-            var childProperty = parentProperty.FindPropertyRelative(sPropChild);
-            if (childProperty != null) {
-                childProperty.managedReferenceValue = child;
-                serializedObject.ApplyModifiedProperties();
-                return;
-            }
-
-            // Composite nodes
-            var childrenProperty = parentProperty.FindPropertyRelative(sPropChildren);
-            if (childrenProperty != null) {
-                var newChild = AppendArrayElement(childrenProperty);
-                newChild.managedReferenceValue = child;
-                serializedObject.ApplyModifiedProperties();
-                return;
-            }
-        }
-        
         public void AddParent(Node child, Node parent, NodePort input, NodePort output)
         {
             var childProperty = FindNode(Nodes, child);
-            
-            var parentProperty = childProperty.FindPropertyRelative(nameof(Node.inputPorts));
-            if (parentProperty == null) return;
-            
-            
-            var newParent = AppendArrayElement(parentProperty);
-            var port = (NodeSlot) newParent.boxedValue;
+            var slotsProperty = childProperty.FindPropertyRelative(nameof(Node.inputPorts));
+            if (slotsProperty == null) return;
 
-            newParent.managedReferenceValue = port;
+            for (var i = 0; i < slotsProperty.arraySize; ++i) {
+                var current = slotsProperty.GetArrayElementAtIndex(i);
+                if (current.FindPropertyRelative(nameof(child.guid).ToLower()).stringValue != input.viewDataKey) continue;
+                if (parent.outputPorts.All(slot => slot.guid != output.viewDataKey)) continue;
+                
+                var parentSlot = parent.outputPorts.First(slot => slot.guid == output.viewDataKey);
+                var childSLot = child.inputPorts.First(slot => slot.guid == input.viewDataKey);
+                childSLot.AddParent(parentSlot);
+                current.FindPropertyRelative(nameof(childSLot.parentNodeSlot)).managedReferenceValue = parentSlot;
+                return;
+            }
             serializedObject.ApplyModifiedProperties();
         }
 
-        public void RemoveParent(Node child, Node parent)
+        public void RemoveParent(Node child, NodePort input)
         {
             var childProperty = FindNode(Nodes, child);
 
-            // Composite nodes
-            var parentsProperty = childProperty.FindPropertyRelative(sPropChildren);
-            if (parentsProperty == null) return;
+            var slotsProperty = childProperty.FindPropertyRelative(sPropChildren);
+            if (slotsProperty == null) return;
             
-            DeleteNode(parentsProperty, parent);
+            for (var i = 0; i < slotsProperty.arraySize; ++i) {
+                var current = slotsProperty.GetArrayElementAtIndex(i);
+                if (current.FindPropertyRelative(nameof(child.guid).ToLower()).stringValue != input.viewDataKey) continue;
+                current.FindPropertyRelative("parentNodeSlot").managedReferenceValue = null;
+                return;
+            }
+            
             serializedObject.ApplyModifiedProperties();
-        }
-
-        public void RemoveChild(Node parent, Node child) {
-            var parentProperty = FindNode(Nodes, parent);
-
-            // RootNode, Decorator node
-            var childProperty = parentProperty.FindPropertyRelative(sPropChild);
-            if (childProperty != null) {
-                childProperty.managedReferenceValue = null;
-                serializedObject.ApplyModifiedProperties();
-                return;
-            }
-
-            // Composite nodes
-            var childrenProperty = parentProperty.FindPropertyRelative(sPropChildren);
-            if (childrenProperty != null) {
-                DeleteNode(childrenProperty, child);
-                serializedObject.ApplyModifiedProperties();
-                return;
-            }
         }
     }
 }

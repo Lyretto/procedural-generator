@@ -8,19 +8,9 @@ using UnityEngine.UIElements;
 namespace Lyred
 {
     public class NodeGraphEditorWindow : EditorWindow
-    {/*
-        public class Test : AssetModificationProcessor {
-
-            static AssetDeleteResult OnWillDeleteAsset(string path, RemoveAssetOptions opt) {
-                NodeGraphEditorWindow wnd = GetWindow<NodeGraphEditorWindow>();
-                wnd.ClearIfSelected(path);
-                return AssetDeleteResult.DidNotDelete;
-            }
-        }*/
-
+    {
         SerializedNodeGraph serializer;
         NodeGraphSettings settings;
-
         NodeGraphView treeView;
         InspectorView inspectorView;
         BlackboardGraphView _blackboardGraphView;
@@ -141,7 +131,7 @@ namespace Lyred
                 titleLabel.text = $"Graph View ({path})";
             }
             treeView.PopulateView(serializer);
-            _blackboardGraphView.Bind(serializer);
+            //_blackboardGraphView.Bind(serializer);
         }
 
         void ClearSelection() {
@@ -161,10 +151,6 @@ namespace Lyred
 
         private void OnNodeSelectionChanged(NodeView node) {
             inspectorView.UpdateSelection(serializer, node);
-        }
-
-        private void OnInspectorUpdate() {
-            treeView?.UpdateNodeStates();
         }
 
         void OnToolbarNewAsset() {

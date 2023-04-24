@@ -1,0 +1,132 @@
+DefaultInputView {
+    width: 232px;
+    height: 22px;
+    padding-top: 1px;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+DefaultInputView > #container {
+    background-color: rgba(63, 63, 63, 0.8);
+    flex-direction: row;
+    align-items: center;
+    padding-left: 8px;
+    margin-right: 12px;
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-color: rgba(25, 25, 25, 0.8);
+    border-radius: 2px;
+}
+
+DefaultInputView > #container > #disabledOverlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(32, 32, 32, 0.0);
+}
+
+DefaultInputView.disabled > #container > #disabledOverlay {
+    background-color: rgba(32, 32, 32, 0.75);
+}
+
+DefaultInputView > #container > #slot {
+    width: 8px;
+    height: 8px;
+    background-color: #2B2B2B;
+    border-color: #232323;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-radius: 4px;
+    margin-left: 6px;
+    margin-right: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+DefaultInputView > #edge {
+    position: absolute;
+    right: 0px;
+    top: 10.5px;
+    height: 2px;
+    width: 20px;
+    background-color: #ff0000;
+}
+
+DefaultInputView > #container > #slot > #dot {
+    width: 4px;
+    height: 4px;
+    background-color: #ff0000;
+    border-radius: 4px;
+}
+
+DefaultInputView.typeMatrix4 > #container > #slot > #dot,
+DefaultInputView.typeMatrix3 > #container > #slot > #dot,
+DefaultInputView.typeMatrix2 > #container > #slot > #dot {
+    background-color: #8FC1DF;
+}
+
+DefaultInputView.typeMatrix4,
+DefaultInputView.typeMatrix3,
+DefaultInputView.typeMatrix2 {
+    --edge-color: #8FC1DF;
+}
+
+DefaultInputView.typeTexture2D > #container > #slot > #dot,
+DefaultInputView.typeTexture2DArray > #container > #slot > #dot,
+DefaultInputView.typeTexture3D > #container > #slot > #dot,
+DefaultInputView.typeCubemap > #container > #slot > #dot {
+    background-color: #FF8B8B;
+}
+
+DefaultInputView.typeTexture2D,
+DefaultInputView.typeTexture2DArray,
+DefaultInputView.typeTexture3D,
+DefaultInputView.typeCubemap {
+    --edge-color: #FF8B8B;
+}
+
+DefaultInputView.typeVector4 > #container > #slot > #dot {
+    background-color: #FBCBF4;
+}
+
+DefaultInputView.typeVector4 {
+    --edge-color: #FBCBF4;
+}
+
+DefaultInputView.typeVector3 > #container > #slot > #dot {
+    background-color: #F6FF9A;
+}
+
+DefaultInputView.typeVector3 {
+    --edge-color: #F6FF9A;
+}
+
+DefaultInputView.typeVector2 > #container > #slot > #dot {
+    background-color: #9AEF92;
+}
+
+DefaultInputView.typeVector2 {
+    --edge-color: #9AEF92;
+}
+
+DefaultInputView.typeVector1 > #container > #slot > #dot {
+    background-color: #84E4E7;
+}
+
+DefaultInputView.typeVector1 {
+    --edge-color: #84E4E7;
+}
+
+DefaultInputView.typeBoolean > #container > #slot > #dot {
+    background-color: #9481E6;
+}
+
+DefaultInputView.typeBoolean {
+    --edge-color: #9481E6;
+}

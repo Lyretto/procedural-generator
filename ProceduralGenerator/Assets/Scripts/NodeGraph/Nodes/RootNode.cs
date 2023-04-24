@@ -6,27 +6,15 @@ namespace Lyred
 
     public class RootNode : Node
     {
-        [SerializeReference] [HideInInspector] public Node parent;
-
+        public override object GetResult()
+        {
+            inputPorts.ForEach(slots => slots.parentNodeSlot.node.Result());
+            return null;
+        }
 
         protected override void InitPorts()
         {
-            inputPorts.Add(new NodePortInfo(typeof(Object), "Object"));
-        }
-
-        protected override void OnStart()
-        {
-
-        }
-
-        protected override void OnStop()
-        {
-
-        }
-
-        protected override State OnUpdate()
-        {
-            return parent.Update();
+            inputPorts.Add(new NodeSlot(this,"Object",typeof(GameObject)));
         }
     }
 }

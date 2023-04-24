@@ -20,13 +20,12 @@ namespace Lyred {
                 assetSelector.choices.Add(ToMenuFormat(treePath));
             });
         }
-        
-        public string ToMenuFormat(string one) {
-            // Using the slash creates submenus...
+
+        private static string ToMenuFormat(string one) {
             return one.Replace("/", "|");
         }
-        
-        public static List<string> GetAssetPaths<T>() where T : UnityEngine.Object {
+
+        private static List<string> GetAssetPaths<T>() where T : UnityEngine.Object {
             string[] assetIds = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
             List<string> paths = new List<string>();
             foreach (var assetId in assetIds) {

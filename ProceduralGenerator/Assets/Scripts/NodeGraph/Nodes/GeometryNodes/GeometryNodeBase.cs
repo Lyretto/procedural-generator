@@ -1,23 +1,20 @@
 using Lyred;
 using UnityEngine;
 
-public abstract class MeshNodeBase : Node
+public abstract class GeometryNodeBase : Node
 {
-    [SerializeReference]
-    private NodeSlot sizeSlot;
-    [SerializeReference]
-    private NodeSlot vertsSlot;
-    [SerializeReference]
-    private NodeSlot meshSlot;
+    [SerializeReference] private NodeSlot sizeSlot;
+    [SerializeReference] private NodeSlot vertsSlot;
+    [SerializeReference] private NodeSlot geometrySlot;
     
     protected override void InitPorts()
     {
         sizeSlot = new NodeSlot(this, "Size", typeof(float));
         vertsSlot = new NodeSlot(this, "Verts", typeof(int));
-        meshSlot = new NodeSlot(this, "Mesh", typeof(Mesh)); ;
+        geometrySlot = new NodeSlot(this, "Geometry", typeof(GeometryData)); ;
         inputPorts.Add(sizeSlot);
         inputPorts.Add(vertsSlot);
-        outputPorts.Add(meshSlot);
+        outputPorts.Add(geometrySlot);
     }
 
     protected float GetSize()

@@ -10,16 +10,12 @@ namespace Lyred
 
         // Start is called before the first frame update
         private void Start() {
+            /*
             context = CreateBehaviourTreeContext();
             graph = graph.Clone();
-            graph.Bind(context);
-        }
-
-        // Update is called once per frame
-        private void Update() {
-            if (graph) {
-                graph.Update();
-            }
+            graph.Bind(context);*/
+            
+            if(graph) graph.Generate();
         }
 
         private Context CreateBehaviourTreeContext() {
