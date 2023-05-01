@@ -150,6 +150,8 @@ namespace Lyred
         }
 
         private void OnNodeSelectionChanged(NodeView node) {
+            Debug.Log("Node Selected: " + node.node.GetType().ToString());
+            
             inspectorView.UpdateSelection(serializer, node);
         }
 

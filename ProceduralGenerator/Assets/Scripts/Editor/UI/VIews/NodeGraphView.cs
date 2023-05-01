@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 using System;
 using System.Linq;
-using Codice.CM.SEIDInfo;
 
 namespace Lyred {
     public class NodeGraphView : GraphView {

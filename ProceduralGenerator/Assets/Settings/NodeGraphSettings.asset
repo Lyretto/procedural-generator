@@ -17,4 +17,5 @@ MonoBehaviour:
   behaviourTreeStyle: {fileID: 7433441132597879392, guid: 42dc9e6fa1d42490eaf16b48d87417d1,
     type: 3}
   nodeXml: {fileID: 9197481963319205126, guid: 3cd9dd31fc37848e68a4bef93c265c7d, type: 3}
+  defaultInputStyle: {fileID: 11400000, guid: 631c07b6ad8874e90a4c43facc7682af, type: 3}
   newNodeBasePath: Assets/

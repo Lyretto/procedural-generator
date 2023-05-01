@@ -10,6 +10,7 @@ namespace Lyred
         public VisualTreeAsset behaviourTreeXml;
         public StyleSheet behaviourTreeStyle;
         public VisualTreeAsset nodeXml;
+        public StyleSheet defaultInputStyle;
         public string newNodeBasePath = "Assets/";
 
         private static NodeGraphSettings FindSettings()

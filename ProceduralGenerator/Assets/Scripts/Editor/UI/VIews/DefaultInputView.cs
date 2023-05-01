@@ -1,12 +1,13 @@
 using System;
-using Lyred;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DefaultInputView : GraphElement, IDisposable
+namespace Lyred
+{
+    public class DefaultInputView : GraphElement, IDisposable
     {
-        readonly CustomStyleProperty<Color> k_EdgeColorProperty = new ("--edge-color");
+        readonly CustomStyleProperty<Color> k_EdgeColorProperty = new("--edge-color");
 
         Color m_EdgeColor = Color.red;
 
@@ -19,9 +20,9 @@ public class DefaultInputView : GraphElement, IDisposable
         VisualElement m_Container;
         EdgeControl m_EdgeControl;
 
-        public DefaultInputView(NodeSlot slot)
+        public DefaultInputView(NodeSlot slot )
         {
-            styleSheets.Add(Resources.Load<StyleSheet>("Styles/DefaultInputView"));
+            styleSheets.Add(NodeGraphSettings.GetOrCreateSettings().defaultInputStyle);
             pickingMode = PickingMode.Ignore;
             ClearClassList();
             m_Slot = slot;
@@ -88,6 +89,7 @@ public class DefaultInputView : GraphElement, IDisposable
                     disposable.Dispose();
                 m_Container.Remove(m_Control);
             }
+
             CreateControl();
         }
 
@@ -106,5 +108,6 @@ public class DefaultInputView : GraphElement, IDisposable
             m_EdgeControl = null;
             UnregisterCallback<CustomStyleResolvedEvent>(OnCustomStyleResolved);
         }
-    
+
+    }
 }
