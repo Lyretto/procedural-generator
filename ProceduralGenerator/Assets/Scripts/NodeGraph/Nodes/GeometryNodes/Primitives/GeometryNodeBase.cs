@@ -9,9 +9,9 @@ public abstract class GeometryNodeBase : Node
     
     protected override void InitPorts()
     {
-        sizeSlot = new NodeSlot(this, "Size", typeof(float));
-        vertsSlot = new NodeSlot(this, "Verts", typeof(int));
-        geometrySlot = new NodeSlot(this, "Geometry", typeof(GeometryData)); ;
+        sizeSlot = new NodeSlot(this, "Size", "float");
+        vertsSlot = new NodeSlot(this, "Verts", "int");
+        geometrySlot = new NodeSlot(this, "Geometry", typeof(GeometryData).ToString()); ;
         inputPorts.Add(sizeSlot);
         inputPorts.Add(vertsSlot);
         outputPorts.Add(geometrySlot);

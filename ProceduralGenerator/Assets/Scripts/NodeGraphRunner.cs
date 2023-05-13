@@ -5,15 +5,13 @@ namespace Lyred
     public class NodeGraphRunner : MonoBehaviour
     {
         public NodeGraph graph;
-        // Storage container object to hold game object subsystems
-        Context context;
-
-        // Start is called before the first frame update
+        private Context context;
+        
         private void Start() {
-            /*
-            context = CreateBehaviourTreeContext();
-            graph = graph.Clone();
-            graph.Bind(context);*/
+            
+            //context = CreateBehaviourTreeContext();
+            //graph = graph.Clone();
+            //graph.Bind(context);
             
             if(graph) graph.Generate();
         }

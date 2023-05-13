@@ -99,11 +99,11 @@ namespace Lyred {
             }
         }
 
-        public void AddParent(Node child, Node parent, NodePort input, NodePort output)
+        public bool AddParent(Node child, Node parent, NodePort input, NodePort output)
         {
             var childProperty = FindNode(Nodes, child);
             var slotsProperty = childProperty.FindPropertyRelative(nameof(Node.inputPorts));
-            if (slotsProperty == null) return;
+            if (slotsProperty == null) return false;
 
             for (var i = 0; i < slotsProperty.arraySize; ++i) {
                 var current = slotsProperty.GetArrayElementAtIndex(i);
@@ -112,11 +112,12 @@ namespace Lyred {
                 
                 var parentSlot = parent.outputPorts.First(slot => slot.guid == output.viewDataKey);
                 var childSLot = child.inputPorts.First(slot => slot.guid == input.viewDataKey);
-                childSLot.AddParent(parentSlot);
+                if(!childSLot.AddParent(parentSlot)) return false;
                 current.FindPropertyRelative(nameof(childSLot.parentNodeSlot)).managedReferenceValue = parentSlot;
-                return;
+                return true;
             }
             serializedObject.ApplyModifiedProperties();
+            return false;
         }
 
         public void RemoveParent(Node child, NodePort input)

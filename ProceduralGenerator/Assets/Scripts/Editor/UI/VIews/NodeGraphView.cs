@@ -91,18 +91,24 @@ namespace Lyred {
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange) 
         {
             RemoveGraphElements(graphViewChange.elementsToRemove);
-            CreateEdges(graphViewChange.edgesToCreate);
+            graphViewChange.edgesToCreate = CreateEdges(graphViewChange.edgesToCreate);
 
             return graphViewChange;
         }
 
-        private void CreateEdges(List<Edge> edgesToCreate)
+        private List<Edge> CreateEdges(List<Edge> edgesToCreate)
         {
+            var createdEdges = new List<Edge>();
             edgesToCreate?.ForEach(edge => {
                 var parentPort = edge.output as NodePort;
                 var childPort = edge.input as NodePort;
-                serializer.AddParent(((NodeView)childPort!.node).node, ((NodeView)parentPort!.node).node, childPort, parentPort);
+                var isAdded = serializer.AddParent(((NodeView)childPort!.node).node, ((NodeView)parentPort!.node).node, childPort, parentPort);
+                if (isAdded)
+                {
+                    createdEdges.Add(edge);
+                }
             });
+            return createdEdges;
         }
 
         private void RemoveGraphElements(List<GraphElement> elements)

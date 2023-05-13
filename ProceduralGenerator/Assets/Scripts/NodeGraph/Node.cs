@@ -15,7 +15,7 @@ namespace Lyred
         }
 
         public bool drawGizmos;
-        public State state = State.Running;
+        [HideInInspector] public State state = State.Running;
         [HideInInspector] public Context context;
         [HideInInspector] public Blackboard blackboard;
         [HideInInspector] public string guid = Guid.NewGuid().ToString();
@@ -24,7 +24,7 @@ namespace Lyred
         public List<NodeSlot> inputPorts = new();
         [HideInInspector] [SerializeReference]
         public List<NodeSlot> outputPorts = new();
-        public bool dirty;
+        [HideInInspector] public bool dirty;
         private object savedResult;
 
         protected Node()

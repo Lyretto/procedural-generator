@@ -15,7 +15,7 @@ namespace Lyred
         public NodeSlot slot => m_Slot;
 
         NodeSlot m_Slot;
-        Type m_SlotType;
+        string m_SlotType;
         VisualElement m_Control;
         VisualElement m_Container;
         EdgeControl m_EdgeControl;
@@ -26,7 +26,7 @@ namespace Lyred
             pickingMode = PickingMode.Ignore;
             ClearClassList();
             m_Slot = slot;
-            m_SlotType = slot.SlotType;
+            m_SlotType = slot.slotTypeName;
             AddToClassList("type" + m_SlotType);
 
             m_EdgeControl = new EdgeControl
@@ -74,14 +74,14 @@ namespace Lyred
 
         public void UpdateSlotType()
         {
-            if (slot.SlotType != m_SlotType)
+            if (slot.slotTypeName != m_SlotType)
                 Recreate();
         }
 
         private void Recreate()
         {
             RemoveFromClassList("type" + m_SlotType);
-            m_SlotType = slot.SlotType;
+            m_SlotType = slot.slotTypeName;
             AddToClassList("type" + m_SlotType);
             if (m_Control != null)
             {

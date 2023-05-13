@@ -12,9 +12,9 @@ public abstract class MeshNodeBase : Node
     
     protected override void InitPorts()
     {
-        sizeSlot = new NodeSlot(this, "Size", typeof(float));
-        vertsSlot = new NodeSlot(this, "Verts", typeof(int));
-        meshSlot = new NodeSlot(this, "Mesh", typeof(Mesh)); ;
+        sizeSlot = new NodeSlot(this, "Size", "float");
+        vertsSlot = new NodeSlot(this, "Verts", "int");
+        meshSlot = new NodeSlot(this, "Mesh", typeof(Mesh).ToString()); ;
         inputPorts.Add(sizeSlot);
         inputPorts.Add(vertsSlot);
         outputPorts.Add(meshSlot);

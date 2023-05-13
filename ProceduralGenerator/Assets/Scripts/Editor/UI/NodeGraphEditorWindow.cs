@@ -99,19 +99,20 @@ namespace Lyred
                 case PlayModeStateChange.ExitingEditMode:
                     break;
                 case PlayModeStateChange.EnteredPlayMode:
-                    EditorApplication.delayCall += OnSelectionChange;
+                    EditorApplication.delayCall -= OnSelectionChange;
                     break;
                 case PlayModeStateChange.ExitingPlayMode:
                     break;
             }
         }
 
-        private void OnSelectionChange() {
-            if (Selection.activeGameObject) {
-                NodeGraphRunner runner = Selection.activeGameObject.GetComponent<NodeGraphRunner>();
-                if (runner) {
-                    SelectTree(runner.graph);
-                }
+        private void OnSelectionChange()
+        {
+            if (!Selection.activeGameObject) return;
+            
+            var runner = Selection.activeGameObject.GetComponent<NodeGraphRunner>();
+            if (runner) {
+                SelectTree(runner.graph);
             }
         }
 
@@ -130,7 +131,7 @@ namespace Lyred
                 }
                 titleLabel.text = $"Graph View ({path})";
             }
-            treeView.PopulateView(serializer);
+            treeView?.PopulateView(serializer);
             //_blackboardGraphView.Bind(serializer);
         }
 
@@ -150,7 +151,7 @@ namespace Lyred
         }
 
         private void OnNodeSelectionChanged(NodeView node) {
-            Debug.Log("Node Selected: " + node.node.GetType().ToString());
+            Debug.Log("Node Selected: " + node?.node?.GetType());
             
             inspectorView.UpdateSelection(serializer, node);
         }

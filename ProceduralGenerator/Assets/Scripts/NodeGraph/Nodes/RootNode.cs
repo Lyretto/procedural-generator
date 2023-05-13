@@ -8,13 +8,13 @@ namespace Lyred
     {
         public override object GetResult()
         {
-            inputPorts.ForEach(slots => slots.parentNodeSlot.node.Result());
+           // inputPorts.ForEach(slots => slots.parentNodeSlot?.node.Result());
             return null;
         }
 
         protected override void InitPorts()
         {
-            inputPorts.Add(new NodeSlot(this,"Object",typeof(GameObject)));
+            inputPorts.Add(new NodeSlot(this,"Object",typeof(GameObject).ToString()));
         }
     }
 }

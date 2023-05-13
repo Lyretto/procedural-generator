@@ -8,7 +8,7 @@ namespace Lyred
         private NodeSlot pathSlot;
         protected override void InitPorts()
         {
-            pathSlot = new NodeSlot(this, "Path", typeof(string));
+            pathSlot = new NodeSlot(this, "Path", "string");
             inputPorts.Add(pathSlot);
             base.InitPorts();
         }

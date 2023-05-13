@@ -13,87 +13,38 @@ MonoBehaviour:
   m_Name: New Behaviour Tree
   m_EditorClassIdentifier: 
   rootNode:
-    rid: 3383461655360569368
+    rid: 5270799561333669897
   nodes:
-  - rid: 3383461655360569368
-  - rid: 3383461655360569380
-  treeState: 0
+  - rid: 5270799561333669897
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-  viewPosition: {x: 535, y: 204, z: 0}
+  viewPosition: {x: 341, y: 521, z: 0}
   viewScale: {x: 1, y: 1, z: 1}
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 3383461655360569368
+    - rid: 5270799561333669897
       type: {class: RootNode, ns: Lyred, asm: Assembly-CSharp}
       data:
         drawGizmos: 0
         state: 0
         blackboard:
           moveToPosition: {x: 0, y: 0, z: 0}
-        guid: 6f8ab2ad-0157-4e64-a3ba-a1bae4d7eef1
+        guid: 12ebb527-6682-4f3a-9085-108df17706f3
         position: {x: 0, y: 0}
         inputPorts:
-        - rid: 3383461655360569369
+        - rid: 5270799561333669898
         outputPorts: []
         dirty: 0
-    - rid: 3383461655360569369
+    - rid: 5270799561333669898
       type: {class: NodeSlot, ns: Lyred, asm: Assembly-CSharp}
       data:
-        guid: ac54c9ac-bbdc-4611-aca5-9d2b289a1547
+        guid: 628886f7-434f-47b5-9181-942f7423e597
         name: Object
+        slotTypeName: UnityEngine.GameObject
         node:
-          rid: 3383461655360569368
-        parentNodeSlot:
-          rid: -2
-    - rid: 3383461655360569380
-      type: {class: LineNode, ns: Lyred, asm: Assembly-CSharp}
-      data:
-        drawGizmos: 0
-        state: 0
-        blackboard:
-          moveToPosition: {x: 0, y: 0, z: 0}
-        guid: e587ed08b2e394dbe98686345c746240
-        position: {x: -395, y: 0}
-        inputPorts:
-        - rid: 3383461655360569381
-        - rid: 3383461655360569382
-        outputPorts:
-        - rid: 3383461655360569383
-        dirty: 0
-        sizeSlot:
-          rid: 3383461655360569381
-        vertsSlot:
-          rid: 3383461655360569382
-        geometrySlot:
-          rid: 3383461655360569383
-    - rid: 3383461655360569381
-      type: {class: NodeSlot, ns: Lyred, asm: Assembly-CSharp}
-      data:
-        guid: 564c7916-6c89-44fc-8576-81d85e1dea29
-        name: Size
-        node:
-          rid: 3383461655360569380
-        parentNodeSlot:
-          rid: -2
-    - rid: 3383461655360569382
-      type: {class: NodeSlot, ns: Lyred, asm: Assembly-CSharp}
-      data:
-        guid: 0782e369-5b90-488a-a852-45fa9e3f1fc3
-        name: Verts
-        node:
-          rid: 3383461655360569380
-        parentNodeSlot:
-          rid: -2
-    - rid: 3383461655360569383
-      type: {class: NodeSlot, ns: Lyred, asm: Assembly-CSharp}
-      data:
-        guid: e0206c86-7e4d-46f5-b126-6c2a1eebcf41
-        name: Geometry
-        node:
-          rid: 3383461655360569380
+          rid: 5270799561333669897
         parentNodeSlot:
           rid: -2

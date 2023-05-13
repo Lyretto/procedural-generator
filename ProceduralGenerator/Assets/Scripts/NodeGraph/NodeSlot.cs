@@ -11,7 +11,8 @@ namespace Lyred
         public string guid;
         [HideInInspector] [SerializeReference]
         public string name;
-        public Type SlotType;
+        [HideInInspector] [SerializeReference]
+        public string slotTypeName;
         [HideInInspector] [SerializeReference]
         public Node node;
         [HideInInspector] [SerializeReference]
@@ -23,16 +24,19 @@ namespace Lyred
             return parentNodeSlot?.node.Result();
         }
         
-        public NodeSlot(Node node, string displayName, Type type)
+        public NodeSlot(Node node, string displayName, string type)
         {
             this.node = node;
             name = displayName;
-            SlotType = type;
+            slotTypeName = type;
         }
 
-        public void AddParent(NodeSlot parent)
+        public bool AddParent(NodeSlot parent)
         {
+            Debug.Log("Types:" + parent.slotTypeName + "  " + slotTypeName);
+            if (parent.slotTypeName != slotTypeName) return false;
             parentNodeSlot = parent;
+            return true;
         }
         
         public void Dispose()

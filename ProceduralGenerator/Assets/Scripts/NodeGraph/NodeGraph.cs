@@ -6,20 +6,13 @@ namespace Lyred
     [CreateAssetMenu()]
     public class NodeGraph : ScriptableObject {
 
-        [SerializeReference]
-        public RootNode rootNode;
-
-        [SerializeReference]
-        public List<Node> nodes = new ();
-
-        public Node.State treeState = Node.State.Running;
+        [SerializeReference] public RootNode rootNode;
+        [SerializeReference] public List<Node> nodes = new ();
         public Blackboard blackboard = new ();
-
-        #region  EditorProperties 
-        public Vector3 viewPosition = new (600, 300);
-        public Vector3 viewScale = Vector3.one;
-        #endregion
-
+        
+        [HideInInspector] public Vector3 viewPosition = new (600, 300);
+        [HideInInspector]  public Vector3 viewScale = Vector3.one;
+        
         public NodeGraph()
         {
             rootNode = new RootNode();
