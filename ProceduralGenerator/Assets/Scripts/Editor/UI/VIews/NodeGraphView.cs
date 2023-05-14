@@ -54,9 +54,7 @@ namespace Lyred {
             serializer = tree;
             
             ClearView();
-
-            Debug.Assert(serializer.graph.rootNode != null);
-
+            
             serializer.graph.nodes.ForEach(CreateNodeView);
 
             serializer.graph.nodes.ForEach(node => {

@@ -12,7 +12,7 @@ namespace Lyred
             graph = graph.Clone();
             //graph.Bind(context);
             
-            if(graph) graph.Generate();
+            if(graph) graph.Generate(gameObject);
         }
 
         private void OnDrawGizmosSelected() {

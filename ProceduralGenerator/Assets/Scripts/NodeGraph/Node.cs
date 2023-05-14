@@ -19,6 +19,7 @@ namespace Lyred
         [HideInInspector] public Blackboard blackboard;
         [HideInInspector] public string guid = Guid.NewGuid().ToString();
         [HideInInspector] public Vector2 position;
+        [HideInInspector] public GameObject parentObject;
         [HideInInspector] [SerializeReference]
         public List<NodeSlot> inputPorts = new();
         [HideInInspector] [SerializeReference]
@@ -37,6 +38,12 @@ namespace Lyred
         {
             savedResult = savedResult != null && !dirty ? savedResult : GetResult();
             dirty = false;
+
+            if (savedResult is GameObject result && !result)
+            {
+                savedResult = GetResult();
+            }
+            
             return savedResult;
         }
         protected abstract void InitPorts();

@@ -9,15 +9,25 @@ namespace Lyred
         [SerializeReference] public Node rootNode;
         [HideInInspector] public Node currentNode;
         [SerializeReference] public List<Node> nodes = new ();
-        public Blackboard blackboard = new ();
         
+        public Blackboard blackboard = new ();
+        [HideInInspector] public GameObject parentObject;
         [HideInInspector] public Vector3 viewPosition = new (600, 300);
         [HideInInspector]  public Vector3 viewScale = Vector3.one;
 
-        public void Generate()
+        public void Generate(GameObject parentGameObject)
         {
-            var currentNode = this.currentNode ?? rootNode;
-            currentNode?.Result();
+            parentObject = parentGameObject;
+            if (!parentObject)
+            {
+                Debug.LogWarning("no Runner attached, generate new temporary parent object.");
+                parentObject = new GameObject();
+            }
+            var node = currentNode ?? rootNode;
+            
+            Traverse(node, (n) => { n.parentObject = parentObject;});
+            
+            node?.Result();
         }
 
         public static void Traverse(Node node, System.Action<Node> visiter)

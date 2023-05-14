@@ -109,12 +109,19 @@ namespace Lyred
 
         private void OnSelectionChange()
         {
-            if (!Selection.activeGameObject) return;
-            
-            var runner = Selection.activeGameObject.GetComponent<NodeGraphRunner>();
-            if (runner) {
-                SelectTree(runner.graph);
+            if (!Selection.activeGameObject)
+            {
+                SelectTree(null);
+                serializer.graph.parentObject
+                return;
             }
+
+            var runner = Selection.activeGameObject.GetComponent<NodeGraphRunner>();
+            
+            if (!runner) return;
+            
+            SelectTree(runner.graph);
+            runner.graph.Generate(runner.gameObject);
         }
 
         private void SelectTree(NodeGraph newTree) {
@@ -133,6 +140,7 @@ namespace Lyred
                 titleLabel.text = $"Graph View ({path})";
             }
             treeView?.PopulateView(serializer);
+            
             //_blackboardGraphView.Bind(serializer);
         }
 
@@ -157,7 +165,7 @@ namespace Lyred
             if (node?.node != serializer.graph.currentNode)
             {
                 serializer.graph.currentNode = node?.node;
-                serializer.graph.Generate();
+                serializer.graph.Generate( serializer.graph.parentObject);
             }
 
             inspectorView.UpdateSelection(serializer, node);
