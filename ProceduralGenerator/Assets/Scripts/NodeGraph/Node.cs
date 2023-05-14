@@ -16,7 +16,6 @@ namespace Lyred
 
         public bool drawGizmos;
         [HideInInspector] public State state = State.Running;
-        [HideInInspector] public Context context;
         [HideInInspector] public Blackboard blackboard;
         [HideInInspector] public string guid = Guid.NewGuid().ToString();
         [HideInInspector] public Vector2 position;

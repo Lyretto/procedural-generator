@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.UIElements;
@@ -153,6 +154,12 @@ namespace Lyred
         private void OnNodeSelectionChanged(NodeView node) {
             Debug.Log("Node Selected: " + node?.node?.GetType());
             
+            if (node?.node != serializer.graph.currentNode)
+            {
+                serializer.graph.currentNode = node?.node;
+                serializer.graph.Generate();
+            }
+
             inspectorView.UpdateSelection(serializer, node);
         }
 
