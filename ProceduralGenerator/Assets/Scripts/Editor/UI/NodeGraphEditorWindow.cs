@@ -98,7 +98,6 @@ namespace Lyred
                     EditorApplication.delayCall += OnSelectionChange;
                     break;
                 case PlayModeStateChange.ExitingEditMode:
-                    break;
                 case PlayModeStateChange.EnteredPlayMode:
                     EditorApplication.delayCall -= OnSelectionChange;
                     break;
@@ -111,8 +110,12 @@ namespace Lyred
         {
             if (!Selection.activeGameObject)
             {
+                
+                foreach (Transform t in serializer.graph.parentObject.transform)
+                {
+                    DestroyImmediate(t.gameObject);
+                }
                 SelectTree(null);
-                serializer.graph.parentObject
                 return;
             }
 

@@ -124,36 +124,27 @@ namespace Lyred {
             });
         }
 
-        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt) {
-
-            base.BuildContextualMenu(evt);
-
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt) 
+        {
+            if (evt.target is GraphElement view)
+            {
+                base.BuildContextualMenu(evt);
+                return;
+            }
+            
             evt.menu.AppendSeparator();
 
             var nodePosition = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
-            {
-                var types = TypeCache.GetTypesDerivedFrom<MeshNodeBase>();
-                foreach (var type in types) {
-                    evt.menu.AppendAction($"Mesh/{type.Name}", (a) => CreateNode(type, nodePosition));
-                }
-            }
-            {
-                var types = TypeCache.GetTypesDerivedFrom<ObjectNodeBase>();
-                foreach (var type in types) {
-                    evt.menu.AppendAction($"GameObject/{type.Name}", (a) => CreateNode(type, nodePosition));
-                }
-            }
-            {
-                var types = TypeCache.GetTypesDerivedFrom<GeometryNodeBase>();
-                foreach (var type in types) {
-                    evt.menu.AppendAction($"Geometry/{type.Name}", (a) => CreateNode(type, nodePosition));
-                }
-            }
+            var nodeBaseTypes = TypeCache.GetTypesDerivedFrom<Node>();
             
-            if (evt.target is GraphElement view)
+            foreach (var nodeBaseType in nodeBaseTypes)
             {
-                var l = new List<GraphElement> { view };
-                evt.menu.AppendAction("Delete", _ => RemoveGraphElements(l ));
+                if (nodeBaseType.BaseType == typeof(Node)) continue;
+                var nodeTypes = TypeCache.GetTypesDerivedFrom(nodeBaseType.BaseType);
+                foreach (var nodeType in nodeTypes)
+                {
+                    evt.menu.AppendAction($"{nodeBaseType.BaseType!.Name}/{nodeType.Name}", (a) => CreateNode(nodeType, nodePosition));
+                }
             }
         }
         
@@ -167,15 +158,7 @@ namespace Lyred {
             {
                 OnNodeSelected = OnNodeSelected
             };
-            
             AddElement(nodeView);
-        }
-
-        public void UpdateNodeStates() {
-            nodes.ForEach(n => {
-                var view = n as NodeView;
-                view?.UpdateState();
-            });
         }
     }
 }

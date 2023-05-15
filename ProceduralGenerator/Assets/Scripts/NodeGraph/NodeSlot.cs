@@ -8,7 +8,7 @@ namespace Lyred
     public class NodeSlot : IDisposable
     {
         [HideInInspector] [SerializeReference]
-        public string guid;
+        public string guid = Guid.NewGuid().ToString();
         [HideInInspector] [SerializeReference]
         public string name;
         [HideInInspector] [SerializeReference]
