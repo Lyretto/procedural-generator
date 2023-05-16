@@ -10,8 +10,8 @@ public class MeshComponentNode : ObjectNodeBase
     private NodeSlot meshSlot;
     protected override void InitPorts()
     {
-        gameObjectSlot = new NodeSlot(this, "Prefab", typeof(GameObject).ToString());
-        meshSlot = new NodeSlot(this, "Mesh", typeof(Mesh).ToString());
+        gameObjectSlot = new NodeSlot(this, "Prefab", nameof(GameObject));
+        meshSlot = new NodeSlot(this, "Mesh", nameof(Mesh));
         inputPorts.Add(gameObjectSlot);
         inputPorts.Add(meshSlot);
         base.InitPorts();

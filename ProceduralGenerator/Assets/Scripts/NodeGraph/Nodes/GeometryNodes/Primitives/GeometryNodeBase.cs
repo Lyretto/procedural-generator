@@ -11,7 +11,7 @@ public abstract class GeometryNodeBase : Node
     {
         sizeSlot = new NodeSlot(this, "Size", "float");
         vertsSlot = new NodeSlot(this, "Verts", "int");
-        geometrySlot = new NodeSlot(this, "Geometry", typeof(GeometryData).ToString()); ;
+        geometrySlot = new NodeSlot(this, "Geometry", nameof(GeometryData)); ;
         inputPorts.Add(sizeSlot);
         inputPorts.Add(vertsSlot);
         outputPorts.Add(geometrySlot);

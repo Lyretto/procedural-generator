@@ -9,9 +9,9 @@ namespace Lyred
     {
         [HideInInspector] [SerializeReference]
         public string guid = Guid.NewGuid().ToString();
-        [HideInInspector] [SerializeReference]
+        [HideInInspector] //[SerializeReference]
         public string name;
-        [HideInInspector] [SerializeReference]
+        [HideInInspector] //[SerializeReference]
         public string slotTypeName;
         [HideInInspector] [SerializeReference]
         public Node node;
@@ -33,7 +33,6 @@ namespace Lyred
 
         public bool AddParent(NodeSlot parent)
         {
-            Debug.Log("Types:" + parent.slotTypeName + "  " + slotTypeName);
             if (parent.slotTypeName != slotTypeName) return false;
             parentNodeSlot = parent;
             return true;
@@ -43,5 +42,11 @@ namespace Lyred
         {
             Debug.Log("nodeSlot disposed.");
         }
+    }
+
+    public enum SlotDirection
+    {
+        Input,
+        Output
     }
 }

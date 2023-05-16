@@ -31,8 +31,8 @@ namespace Lyred {
             {
                 var nodePort = new NodePort(Direction.Input, Port.Capacity.Single)
                 {
-                    portName = slot.name, //+ " (" + (slot.SlotType?.Name ?? "") + ")" ,
-                    viewDataKey = Guid.NewGuid().ToString(),
+                    portName = slot.name + " (" + slot.slotTypeName + ")" ,
+                    viewDataKey = slot.guid,
                 };
                 slot.guid = nodePort.viewDataKey;
                 inputContainer.Add(nodePort);
@@ -56,8 +56,8 @@ namespace Lyred {
             {
                 var nodePort = new NodePort(Direction.Output, Port.Capacity.Single)
                 {
-                    portName = slot.name, // + " (" + (slot.SlotType?.Name ?? "") + ")" ,
-                    viewDataKey = slot.guid,
+                    portName = slot.name + " (" + slot.slotTypeName + ")" ,
+                    viewDataKey = slot.guid
                 };
                 slot.guid = nodePort.viewDataKey;
                 outputContainer.Add(nodePort);

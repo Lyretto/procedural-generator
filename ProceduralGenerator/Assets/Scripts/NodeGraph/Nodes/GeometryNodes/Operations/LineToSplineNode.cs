@@ -20,8 +20,8 @@ namespace Lyred
 
         protected override void InitPorts()
         {
-            lineSlot = new NodeSlot(this, "Line", typeof(GeometryData).ToString());
-            splineSlot = new NodeSlot(this, "Spline", typeof(Spline).ToString());
+            lineSlot = new NodeSlot(this, "Line", nameof(GeometryData));
+            splineSlot = new NodeSlot(this, "Spline", nameof(Spline));
             inputPorts.Add(lineSlot);
             outputPorts.Add(splineSlot);
         }

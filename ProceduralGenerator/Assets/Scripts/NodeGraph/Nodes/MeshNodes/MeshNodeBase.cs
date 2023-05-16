@@ -1,3 +1,4 @@
+using System;
 using Lyred;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public abstract class MeshNodeBase : Node
     {
         sizeSlot = new NodeSlot(this, "Size", "float");
         vertsSlot = new NodeSlot(this, "Verts", "int");
-        meshSlot = new NodeSlot(this, "Mesh", typeof(Mesh).ToString()); ;
+        meshSlot = new NodeSlot(this, "Mesh", nameof(Mesh)); ;
         inputPorts.Add(sizeSlot);
         inputPorts.Add(vertsSlot);
         outputPorts.Add(meshSlot);

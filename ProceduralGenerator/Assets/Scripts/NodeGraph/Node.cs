@@ -55,5 +55,20 @@ namespace Lyred
         }
 
         public virtual void OnDrawGizmos() { }
+
+        public NodeSlot AddNodeSlot(string name, string type, SlotDirection direction)
+        {
+            var slot = new NodeSlot(this, nodeSlot.SlotName, nodeSlot.SlotType);
+            if (nodeSlot.Direction == SlotDirection.Input)
+            {
+                inputPorts.Add(slot);
+            }
+            else
+            {
+                outputPorts.Add(slot);
+            }
+
+            return slot;
+        }
     }
 }

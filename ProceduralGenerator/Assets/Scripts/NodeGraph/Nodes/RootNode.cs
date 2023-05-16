@@ -14,7 +14,7 @@ namespace Lyred
 
         protected override void InitPorts()
         {
-            inputPorts.Add(new NodeSlot(this,"Object",typeof(GameObject).ToString()));
+            inputPorts.Add(new NodeSlot(this,"Object",nameof(GameObject)));
         }
     }
 }
