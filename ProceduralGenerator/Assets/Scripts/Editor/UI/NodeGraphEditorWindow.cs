@@ -20,26 +20,27 @@ namespace Lyred
         Label titleLabel;
 
         [MenuItem("Lyred/Editor")]
-        public static void OpenWindow() {
-            var wnd = GetWindow<NodeGraphEditorWindow>();
-            wnd.titleContent = new GUIContent("Graph Node Editor");
-            wnd.minSize = new Vector2(800, 600);
+        public static void OpenWindow() => CreateWindow();
+
+        private static void OpenWindow(NodeGraph graph)
+        {
+            CreateWindow().SelectTree(graph);
         }
 
-        public static void OpenWindow(NodeGraph graph) {
+        private static NodeGraphEditorWindow CreateWindow()
+        {
             var wnd = GetWindow<NodeGraphEditorWindow>();
             wnd.titleContent = new GUIContent("Graph Node Editor");
             wnd.minSize = new Vector2(800, 600);
-            wnd.SelectTree(graph);
+            return wnd;
         }
 
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line) {
-            if (Selection.activeObject is NodeGraph) {
-                OpenWindow(Selection.activeObject as NodeGraph);
-                return true;
-            }
-            return false;
+            if (Selection.activeObject is not NodeGraph) return false;
+            
+            OpenWindow(Selection.activeObject as NodeGraph);
+            return true;
         }
 
         public void CreateGUI() {
@@ -71,6 +72,7 @@ namespace Lyred
                 toolbarMenu.menu.AppendAction("New Graph...", (a) => OnToolbarNewAsset());
             });
             treeView.OnNodeSelected = OnNodeSelectionChanged;
+            treeView.OnNodeDeselected = _ => OnNodeSelectionChanged(null);
             //overlayView.OnTreeSelected += SelectTree;
             Undo.undoRedoPerformed += OnUndoRedo;
 
@@ -106,11 +108,11 @@ namespace Lyred
             }
         }
 
+
         private void OnSelectionChange()
         {
             if (!Selection.activeGameObject)
             {
-                
                 foreach (Transform t in serializer.graph.parentObject.transform)
                 {
                     DestroyImmediate(t.gameObject);
@@ -163,7 +165,7 @@ namespace Lyred
         }
 
         private void OnNodeSelectionChanged(NodeView node) {
-            Debug.Log("Node Selected: " + node?.node?.GetType());
+            //Debug.Log("Node Selected: " + node?.node?.GetType());
             
             if (node?.node != serializer.graph.currentNode)
             {

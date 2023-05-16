@@ -58,8 +58,8 @@ namespace Lyred
 
         public NodeSlot AddNodeSlot(string name, string type, SlotDirection direction)
         {
-            var slot = new NodeSlot(this, nodeSlot.SlotName, nodeSlot.SlotType);
-            if (nodeSlot.Direction == SlotDirection.Input)
+            var slot = new NodeSlot(this, name, type);
+            if (direction == SlotDirection.Input)
             {
                 inputPorts.Add(slot);
             }
@@ -67,7 +67,6 @@ namespace Lyred
             {
                 outputPorts.Add(slot);
             }
-
             return slot;
         }
     }

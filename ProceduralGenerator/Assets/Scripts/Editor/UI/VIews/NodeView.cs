@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 namespace Lyred {
     public class NodeView : UnityEditor.Experimental.GraphView.Node {
         public Action<NodeView> OnNodeSelected;
+        public Action<NodeView> OnNodeDeselected;
         private readonly SerializedNodeGraph serializer;
         public Node node;
         private string nodeTitle;
@@ -74,6 +75,12 @@ namespace Lyred {
         public override void OnSelected() {
             base.OnSelected();
             OnNodeSelected?.Invoke(this);
+        }
+
+        public override void OnUnselected()
+        {
+            OnNodeDeselected?.Invoke(this);
+            base.OnUnselected();
         }
 
         private int SortByHorizontalPosition(Node left, Node right) {

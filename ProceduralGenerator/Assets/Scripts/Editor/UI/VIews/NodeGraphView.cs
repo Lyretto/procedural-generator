@@ -5,12 +5,14 @@ using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 using System;
 using System.Linq;
+using Edge = UnityEditor.Experimental.GraphView.Edge;
 
 namespace Lyred {
     public class NodeGraphView : GraphView {
         public new class UxmlFactory : UxmlFactory<NodeGraphView, UxmlTraits> { }
 
         public Action<NodeView> OnNodeSelected;
+        public Action<NodeView> OnNodeDeselected;
 
         SerializedNodeGraph serializer;
         NodeGraphSettings settings;
@@ -27,7 +29,6 @@ namespace Lyred {
 
             var styleSheet = settings.behaviourTreeStyle;
             styleSheets.Add(styleSheet);
-
             viewTransformChanged += OnViewTransformChanged;
         }
 
@@ -156,7 +157,8 @@ namespace Lyred {
         private void CreateNodeView(Node node) {
             var nodeView = new NodeView(serializer, node)
             {
-                OnNodeSelected = OnNodeSelected
+                OnNodeSelected = OnNodeSelected,
+                OnNodeDeselected = OnNodeDeselected
             };
             AddElement(nodeView);
         }

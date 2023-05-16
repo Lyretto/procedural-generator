@@ -18,6 +18,12 @@ namespace Lyred
         public void Generate(GameObject parentGameObject)
         {
             parentObject = parentGameObject;
+            
+            foreach (Transform child in parentObject.transform)
+            {
+                DestroyImmediate(child.gameObject);
+            }
+            
             if (!parentObject)
             {
                 Debug.LogWarning("no Runner attached, generate new temporary parent object.");
