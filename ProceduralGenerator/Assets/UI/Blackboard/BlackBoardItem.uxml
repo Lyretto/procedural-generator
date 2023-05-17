@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/UI/Blackboard/BlackBoardItem.uss?fileID=7433441132597879392&amp;guid=39976462b90f16f478e1fadbfc2426a6&amp;type=3#BlackBoardItem" />
+    <Divider focusable="false">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-self: center; justify-content: center; align-items: center; background-image: none;">
+            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" style="justify-content: center; align-items: center; left: auto; width: 64px;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-self: center; justify-content: center; align-items: center; background-image: none;">
+            <ui:VisualElement class="blackboardknob" />
+        </ui:VisualElement>
+    </Divider>
+</ui:UXML>

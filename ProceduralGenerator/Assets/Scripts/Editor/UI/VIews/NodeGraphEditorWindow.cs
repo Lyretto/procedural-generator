@@ -114,6 +114,7 @@ namespace Lyred
             var activeObject = Selection.activeGameObject;
             if (serializer != null && (!activeObject || activeObject != serializer.graph.parentObject))
             {
+                if(!serializer.graph.parentObject && !activeObject) return;
                 foreach (Transform t in serializer.graph.parentObject.transform)
                 {
                     DestroyImmediate(t.gameObject);

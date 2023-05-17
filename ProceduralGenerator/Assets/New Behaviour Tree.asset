@@ -18,8 +18,8 @@ MonoBehaviour:
   blackboard:
     rid: 5270799655598555138
   parentObject: {fileID: 0}
-  viewPosition: {x: 600, y: 300, z: 0}
-  viewScale: {x: 1, y: 1, z: 1}
+  viewPosition: {x: 475, y: 258, z: 0}
+  viewScale: {x: 0.57175326, y: 0.57175326, z: 1}
   references:
     version: 2
     RefIds:

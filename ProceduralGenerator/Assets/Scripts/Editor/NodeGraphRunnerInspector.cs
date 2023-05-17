@@ -1,57 +1,55 @@
-using System;
-using Lyred;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
-using Object = UnityEngine.Object;
 
-[CustomEditor(typeof(NodeGraphRunner))]
-public class NodeGraphRunnerInspector : Editor
+namespace Lyred
 {
-    private NodeGraphRunner runner;
-    private void OnEnable()
+    [CustomEditor(typeof(NodeGraphRunner))]
+    public class NodeGraphRunnerInspector : Editor
     {
-        runner = (NodeGraphRunner) target;
-    }
+        private NodeGraphRunner runner;
 
-    public override void OnInspectorGUI()
-    {
-        if (GUILayout.Button("Bake"))
+        private void OnEnable()
         {
-            runner.graph.Generate(runner.gameObject);
+            runner = (NodeGraphRunner)target;
         }
-        
-        foreach (var blackboardItem in runner.graph.blackboard.items)
+
+        public override void OnInspectorGUI()
         {
-            GUILayout.BeginHorizontal("box");
-            GUILayout.Label(blackboardItem.Id);
-            switch (blackboardItem.Type)
+            if (GUILayout.Button("Generate"))
             {
-                case "int":
-                    blackboardItem.Value = EditorGUILayout.IntField(blackboardItem.Value is int intValue ? intValue : 0);
-                    break;
-                case "GameObject":
-                    blackboardItem.Value = EditorGUILayout.ObjectField(blackboardItem.Value as GameObject, typeof(object), true);
-                    break;
-                case "Mesh":
-                    blackboardItem.Value = EditorGUILayout.ObjectField(blackboardItem.Value as Mesh, typeof(Mesh), true);
-                    break;
-                case "Spline":
-                    blackboardItem.Value = EditorGUILayout.ObjectField(blackboardItem.Value as SplineContainer, typeof(SplineContainer), true);
-                    break;
-                case "Color":
-                    blackboardItem.Value = EditorGUILayout.ColorField(blackboardItem.Value is Color color ? color : default);
-                    break;
-                case "float":
-                    blackboardItem.Value =
-                        EditorGUILayout.FloatField(blackboardItem.Value is float floatValue ? floatValue : 0);
-                    break;
+                runner.graph.Generate(runner.gameObject);
             }
+
+            BlackBoardItems();
             
-            GUILayout.EndHorizontal();
+            base.OnInspectorGUI();
         }
 
-        base.OnInspectorGUI();
+        private void BlackBoardItems()
+        {
+            EditorGUILayout.Separator();
+            GUILayout.Label("Blackboard");
+            foreach (var blackboardItem in runner.graph.blackboard.items)
+            {
+                GUILayout.BeginHorizontal("box");
+                GUILayout.Label(blackboardItem.Id);
+                blackboardItem.Value = blackboardItem.Type switch
+                {
+                    "int" => EditorGUILayout.IntField(blackboardItem.GetValue() is int intValue ? intValue : 0),
+                    "bool" => EditorGUILayout.Toggle(blackboardItem.GetValue() is bool),
+                    "GameObject" => EditorGUILayout.ObjectField(blackboardItem.GetValue() as GameObject, typeof(object),
+                        true),
+                    "Mesh" => EditorGUILayout.ObjectField(blackboardItem.GetValue() as Mesh, typeof(Mesh), true),
+                    "Spline" => EditorGUILayout.ObjectField(blackboardItem.GetValue() as SplineContainer,
+                        typeof(SplineContainer), true),
+                    "Color" => EditorGUILayout.ColorField(blackboardItem.GetValue() is Color color ? color : default),
+                    "float" => EditorGUILayout.FloatField(blackboardItem.GetValue() is float floatValue ? floatValue : 0),
+                    _ => blackboardItem.GetValue()
+                };
+                GUILayout.EndHorizontal();
+            }
+            EditorGUILayout.Separator();
+        }
     }
-    
 }
