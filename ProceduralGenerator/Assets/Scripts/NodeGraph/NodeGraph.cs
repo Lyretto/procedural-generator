@@ -9,8 +9,7 @@ namespace Lyred
         [SerializeReference] public Node rootNode;
         [HideInInspector] public Node currentNode;
         [SerializeReference] public List<Node> nodes = new ();
-        
-        public Blackboard blackboard = new ();
+        [SerializeReference] public Blackboard blackboard = new ();
         [HideInInspector] public GameObject parentObject;
         [HideInInspector] public Vector3 viewPosition = new (600, 300);
         [HideInInspector]  public Vector3 viewScale = Vector3.one;

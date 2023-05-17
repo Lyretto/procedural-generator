@@ -19,24 +19,30 @@ MonoBehaviour:
   - rid: 5270799634063949829
   - rid: 5270799634063949834
   blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
+    rid: 3147724047180890112
   parentObject: {fileID: 0}
-  viewPosition: {x: 191, y: 298, z: 0}
-  viewScale: {x: 0.43232757, y: 0.43232757, z: 1}
+  viewPosition: {x: 325.5, y: 215, z: 0}
+  viewScale: {x: 0.49717674, y: 0.49717674, z: 1}
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 3147724047180890112
+      type: {class: Blackboard, ns: Lyred, asm: Assembly-CSharp}
+      data:
+        items:
+        - Id: int
     - rid: 5270799634063949824
       type: {class: EmptyGameObject, ns: Lyred, asm: Assembly-CSharp}
       data:
         drawGizmos: 0
         state: 0
         blackboard:
-          moveToPosition: {x: 0, y: 0, z: 0}
+          items:
+          - Id: int
         guid: 0297e6502b736ef4eab8065586543440
-        position: {x: -306.99985, y: -370.2494}
+        position: {x: -333, y: -402.4}
         parentObject: {fileID: 0}
         inputPorts:
         - rid: 5270799634063949825
@@ -86,7 +92,8 @@ MonoBehaviour:
         drawGizmos: 0
         state: 0
         blackboard:
-          moveToPosition: {x: 0, y: 0, z: 0}
+          items:
+          - Id: int
         guid: 6687ac576e39bae41a747ebcbfb7bd44
         position: {x: -207.01134, y: -44.060127}
         parentObject: {fileID: 0}
@@ -138,9 +145,10 @@ MonoBehaviour:
         drawGizmos: 0
         state: 0
         blackboard:
-          moveToPosition: {x: 0, y: 0, z: 0}
+          items:
+          - Id: int
         guid: cc8e72afb110a6f469ca4840f43a30dd
-        position: {x: 57.74901, y: -218.49998}
+        position: {x: 57.499977, y: -218.5}
         parentObject: {fileID: 0}
         inputPorts:
         - rid: 5270799634063949835

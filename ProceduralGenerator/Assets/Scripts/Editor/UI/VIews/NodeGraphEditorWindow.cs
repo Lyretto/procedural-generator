@@ -111,16 +111,18 @@ namespace Lyred
 
         private void OnSelectionChange()
         {
-            if (!Selection.activeGameObject)
+            var activeObject = Selection.activeGameObject;
+            if (serializer != null && (!activeObject || activeObject != serializer.graph.parentObject))
             {
                 foreach (Transform t in serializer.graph.parentObject.transform)
                 {
                     DestroyImmediate(t.gameObject);
                 }
                 SelectTree(null);
-                return;
             }
 
+            if (!activeObject) return;
+            
             var runner = Selection.activeGameObject.GetComponent<NodeGraphRunner>();
             
             if (!runner) return;
@@ -167,7 +169,7 @@ namespace Lyred
         private void OnNodeSelectionChanged(NodeView node) {
             //Debug.Log("Node Selected: " + node?.node?.GetType());
             
-            if (node?.node != serializer.graph.currentNode)
+            if (serializer != null && node?.node != serializer.graph.currentNode)
             {
                 serializer.graph.currentNode = node?.node;
                 serializer.graph.Generate( serializer.graph.parentObject);
