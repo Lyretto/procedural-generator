@@ -9,20 +9,22 @@ namespace Lyred
 
         public Blackboard()
         {
-            items.Add(new BlackboardItem("int", 2));
+            items.Add(new BlackboardItem("Spykes", null, "Spline"));
         }
     }
 
     [System.Serializable]
-    public struct BlackboardItem
+    public class BlackboardItem
     {
         public string Id;
         public object Value;
+        public string Type;
 
-        public BlackboardItem(string id, object value)
+        public BlackboardItem(string id, object value, string type)
         {
-            Id =id;
+            Id = id;
             Value = value;
+            Type = type;
         }
     }
 }
