@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.UIElements;
@@ -15,8 +15,11 @@ namespace Lyred
         NodeGraphView treeView;
         InspectorView inspectorView;
         BlackboardGraphView _blackboardGraphView;
+
+        private ScrollView blackboardItemPopup;
         //OverlayView overlayView;
         ToolbarMenu toolbarMenu;
+        private Button blackboardAddButton;
         Label titleLabel;
 
         [MenuItem("Lyred/Editor")]
@@ -38,7 +41,6 @@ namespace Lyred
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line) {
             if (Selection.activeObject is not NodeGraph) return false;
-            
             OpenWindow(Selection.activeObject as NodeGraph);
             return true;
         }
@@ -57,6 +59,8 @@ namespace Lyred
             toolbarMenu = root.Q<ToolbarMenu>();
            // overlayView = root.Q<OverlayView>("OverlayView");
             titleLabel = root.Q<Label>("TitleLabel");
+            blackboardAddButton = root.Q<Button>("add-blackboard-item");
+            blackboardItemPopup = root.Q<ScrollView>("item-popup");
             
             toolbarMenu.RegisterCallback<MouseEnterEvent>((evt) => {
                 toolbarMenu.menu.MenuItems().Clear();
@@ -107,14 +111,13 @@ namespace Lyred
                     break;
             }
         }
-
-
+        
         private void OnSelectionChange()
         {
             var activeObject = Selection.activeGameObject;
             if (serializer != null && (!activeObject || activeObject != serializer.graph.parentObject))
             {
-                if(!serializer.graph.parentObject && !activeObject) return;
+                if(!serializer.graph.parentObject) return; // && !activeObject)
                 foreach (Transform t in serializer.graph.parentObject.transform)
                 {
                     DestroyImmediate(t.gameObject);
@@ -149,27 +152,37 @@ namespace Lyred
             }
             treeView?.PopulateView(serializer);
             
-            //_blackboardGraphView.Bind(serializer);
+            _blackboardGraphView.Bind(newTree.blackboard, rootVisualElement);
+
+            blackboardAddButton.clickable.clicked += () => {
+                var popup = new GenericMenu();
+                var enumValues = System.Enum.GetValues(typeof(ItemType));
+                foreach (ItemType value in enumValues)
+                {
+                    var menuItem = new GUIContent(value.ToString());
+                    popup.AddItem(menuItem, false, () =>
+                    {
+                        serializer.graph.blackboard.AddItem(value.ToString(), default, value);
+                        _blackboardGraphView.Bind(serializer.graph.blackboard, rootVisualElement);
+                    });
+                }
+                
+                popup.ShowAsContext();
+            };
         }
 
-        void ClearSelection() {
+        private void ClearSelection() {
             serializer = null;
-            //overlayView.Show();
             treeView.ClearView();
         }
 
-        void ClearIfSelected(string path) {
+        private void ClearIfSelected(string path) {
             if (AssetDatabase.GetAssetPath(serializer.graph) == path) {
-                // Need to delay because this is called from a will delete asset callback
-                EditorApplication.delayCall += () => {
-                    SelectTree(null);
-                };
+                EditorApplication.delayCall += () => { SelectTree(null); };
             }
         }
 
         private void OnNodeSelectionChanged(NodeView node) {
-            //Debug.Log("Node Selected: " + node?.node?.GetType());
-            
             if (serializer != null && node?.node != serializer.graph.currentNode)
             {
                 serializer.graph.currentNode = node?.node;
@@ -199,14 +212,11 @@ namespace Lyred
             EditorGUIUtility.PingObject(tree);
             return tree;
         }
-        private static List<string> GetAssetPaths<T>() where T : UnityEngine.Object {
-            string[] assetIds = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
-            List<string> paths = new List<string>();
-            foreach (var assetId in assetIds) {
-                string path = AssetDatabase.GUIDToAssetPath(assetId);
-                paths.Add(path);
-            }
-            return paths;
+        
+        private static List<string> GetAssetPaths<T>() where T : Object 
+        {
+            var assetIds = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
+            return assetIds.Select(AssetDatabase.GUIDToAssetPath).ToList();
         }
     }
-    }
+}

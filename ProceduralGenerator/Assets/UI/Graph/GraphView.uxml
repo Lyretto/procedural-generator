@@ -1,19 +1,23 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="project://database/Assets/UI/BehaviourTree.uss?fileID=7433441132597879392&amp;guid=42dc9e6fa1d42490eaf16b48d87417d1&amp;type=3#BehaviourTree" />
+    <Style src="project://database/Assets/UI/Graph/GraphViewStyle.uss?fileID=7433441132597879392&amp;guid=42dc9e6fa1d42490eaf16b48d87417d1&amp;type=3#GraphViewStyle" />
     <Lyred.RootView name="RootView" style="flex-grow: 1;">
         <uie:Toolbar>
             <uie:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" text="Assets" />
         </uie:Toolbar>
         <Lyred.SplitView fixed-pane-initial-dimension="226" style="background-color: rgba(255, 0, 0, 0);">
-            <ui:VisualElement name="left-panel" style="flex-grow: 1; background-color: rgba(221, 5, 5, 0);">
+            <ui:VisualElement name="left-panel" style="flex-grow: 1; background-color: rgba(221, 5, 5, 0); max-width: none; min-width: 100px;">
                 <ui:Label tabindex="-1" text="Inspector" display-tooltip-when-elided="true" />
                 <Lyred.SplitView orientation="Vertical" fixed-pane-initial-dimension="300">
-                    <ui:VisualElement name="upper-panel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                    <ui:VisualElement name="upper-panel" style="flex-grow: 1; background-color: rgb(40, 40, 40);">
                         <Lyred.InspectorView />
                     </ui:VisualElement>
-                    <ui:VisualElement name="lower-panel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-                        <ui:Label tabindex="-1" text="Blackboard" display-tooltip-when-elided="true" />
-                        <Lyred.BlackboardGraphView style="flex-grow: 1;" />
+                    <ui:VisualElement name="lower-panel" style="flex-grow: 1; background-color: rgb(40, 40, 40); min-height: 100px;">
+                        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgb(56, 56, 56); position: relative; max-height: 30px; height: 30px; justify-content: center;">
+                            <ui:Label tabindex="-1" text="Blackboard" display-tooltip-when-elided="true" style="justify-content: flex-start;" />
+                            <ui:Button text="+" display-tooltip-when-elided="true" name="add-blackboard-item" class="add-blackboard-item" style="display: flex; height: -3px;" />
+                        </ui:VisualElement>
+                        <Lyred.BlackboardGraphView horizontal-scroller-visibility="Hidden" class="BlackboardGraphView" style="flex-grow: 1; padding-left: 20px;" />
+                        <ui:ScrollView name="item-popup" style="position: absolute; right: 10px; width: 50px; min-width: auto; min-height: 30px; max-height: 400px; top: 15px; background-color: rgb(40, 40, 40); border-left-color: rgb(117, 117, 117); border-right-color: rgb(117, 117, 117); border-top-color: rgb(117, 117, 117); border-bottom-color: rgb(117, 117, 117); border-left-width: 0.5px; border-right-width: 0.5px; border-top-width: 0.5px; border-bottom-width: 0.5px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; height: auto; display: none;" />
                     </ui:VisualElement>
                 </Lyred.SplitView>
             </ui:VisualElement>

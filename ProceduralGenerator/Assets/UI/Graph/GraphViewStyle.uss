@@ -8,3 +8,28 @@ GridBackground {
 Label {
     color: rgb(196, 196, 196);
 }
+
+#BlackboardItemView {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 10px;
+    margin-bottom: 0;
+    width: auto;
+    height: 35px;
+    max-width: none;
+    min-width: auto;
+    min-height: auto;
+    max-height: none;
+    align-items: flex-start;
+    overflow: visible;
+}
+
+#add-blackboard-item {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    overflow: visible;
+    opacity: 1;
+    display: flex;
+    justify-content: flex-start;
+}

@@ -1,39 +1,52 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Lyred
 {
-    [System.Serializable]
+    [Serializable]
     public class Blackboard
     {
+        [SerializeReference]
         public List<BlackboardItem> items = new ();
 
-        public Blackboard()
-        {
-            items.Add(new BlackboardItem("Spykes", null, "Spline"));
-        }
-
-        public void AddItem(string name, object defaultValue, string type)
+        public void AddItem(string name, object defaultValue, ItemType type)
         {
             items.Add(new BlackboardItem(name, defaultValue, type));
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class BlackboardItem
     {
         public string Id;
+        public string id;
         public object Value;
         public object DefaultValue;
-        public string Type;
+        public ItemType type;
 
-        public BlackboardItem(string id, object value, string type)
+        public BlackboardItem(string name, object value, ItemType type)
         {
-            Id = id;
+            Id = name;
+            id = Guid.NewGuid().ToString();
             Value = value;
             DefaultValue = value;
-            Type = type;
+            this.type = type;
         }
 
         public object GetValue() => Value ?? DefaultValue;
+    }
+    
+    public enum ItemType
+    {
+        Float,
+        Int,
+        Vector2,
+        Vector3,
+        Color,
+        Spline,
+        GameObject,
+        Mesh,
+        Bool,
     }
 }

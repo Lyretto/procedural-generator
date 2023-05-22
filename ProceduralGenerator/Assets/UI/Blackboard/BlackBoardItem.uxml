@@ -1,11 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/UI/Blackboard/BlackBoardItem.uss?fileID=7433441132597879392&amp;guid=39976462b90f16f478e1fadbfc2426a6&amp;type=3#BlackBoardItem" />
-    <Divider focusable="false">
-        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-self: center; justify-content: center; align-items: center; background-image: none;">
-            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" style="justify-content: center; align-items: center; left: auto; width: 64px;" />
+    <ui:VisualElement name="node-border" style="flex-grow: 1; flex-direction: column;">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-self: flex-start; margin-top: 5px; margin-left: 0; margin-right: 0; margin-bottom: 0;">
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-self: flex-start; justify-content: center; align-items: center; background-image: none; left: 5px; top: 0; bottom: 0; position: absolute; width: 7px; right: 0;">
+                <ui:VisualElement name="blackboardknob" class="blackboardknob" />
+            </ui:VisualElement>
+            <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-self: flex-start; justify-content: center; align-items: flex-start; background-image: none; top: auto; right: auto; bottom: auto; flex-direction: column; position: relative; left: auto; margin-left: 20px; margin-right: 15px; margin-top: 0;">
+                <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="itemName" style="justify-content: center; align-items: center; width: auto; flex-grow: 0; flex-shrink: 1;" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-self: center; justify-content: center; align-items: center; background-image: none;">
-            <ui:VisualElement class="blackboardknob" />
-        </ui:VisualElement>
-    </Divider>
+        <ui:Label tabindex="0" text="Label" display-tooltip-when-elided="true" name="type-label" style="white-space: normal; -unity-text-align: lower-right; color: rgb(128, 128, 128); position: relative; width: 100%; align-self: flex-end; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-right: 5px; font-size: 10px;" />
+        <ui:VisualElement name="selection-border" style="background-color: rgba(0, 0, 0, 0); display: flex;" />
+    </ui:VisualElement>
 </ui:UXML>

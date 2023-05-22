@@ -88,7 +88,6 @@ namespace Lyred {
         }
 
         public void DeleteNode(Node node) {
-
             var nodesProperty = Nodes;
 
             for(var i = 0; i < nodesProperty.arraySize; ++i) {

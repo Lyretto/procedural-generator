@@ -1,22 +1,75 @@
-.custom-label {
-    font-size: 20px;
-    -unity-font-style: bold;
-    color: rgb(68, 138, 255);
-}
-
-.blackboardknob {
+#blackboardknob {
     flex-grow: 0;
-    background-color: rgb(255, 0, 0);
     align-self: center;
     justify-content: center;
     align-items: center;
-    background-image: none;
-    width: 10px;
-    height: 10px;
-    -unity-slice-left: 0;
-    rotate: 0;
+    width: 7px;
+    height: 7px;
+    border-top-left-radius: 3.5px;
+    border-bottom-left-radius: 3.5px;
+    border-top-right-radius: 3.5px;
+    border-bottom-right-radius: 3.5px;
+}
+
+#node-border {
+    background-color: rgb(56, 56, 56);
+    border-left-color: rgb(37, 37, 37);
+    border-right-color: rgb(37, 37, 37);
+    border-top-color: rgb(37, 37, 37);
+    border-bottom-color: rgb(37, 37, 37);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+
+#selection-border {
+    border-left-color: rgb(0, 165, 255);
+    border-right-color: rgb(0, 165, 255);
+    border-top-color: rgb(0, 165, 255);
+    border-bottom-color: rgb(0, 165, 255);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+:hover > #selection-border {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+:selected > #selection-border {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+:hover:selected > #selection-border {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+}
+
+#divider {
+    min-height: 1px;
+    background-color: rgb(72, 72, 72);
+    rotate: 90deg;
 }

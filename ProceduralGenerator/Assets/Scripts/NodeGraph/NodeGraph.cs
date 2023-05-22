@@ -18,6 +18,8 @@ namespace Lyred
         {
             parentObject = parentGameObject;
             
+            if(!parentGameObject) return;
+
             foreach (Transform child in parentObject.transform)
             {
                 DestroyImmediate(child.gameObject);

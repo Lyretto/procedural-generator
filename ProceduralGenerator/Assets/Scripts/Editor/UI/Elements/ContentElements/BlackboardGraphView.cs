@@ -1,51 +1,154 @@
-using System.Collections.Generic;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace Lyred {
-    public class BlackboardGraphView : VisualElement {
+    public class BlackboardGraphView : ScrollView {
         public new class UxmlFactory : UxmlFactory<BlackboardGraphView, UxmlTraits> { }
+        
 
         public BlackboardGraphView()
         {
-            var name = "Item";
-            var color = Color.green;
-            var item = new VisualElement();
-
-            var labelContainer = new VisualElement();
-            var knobContainer = new VisualElement();
-            var knob = new VisualElement
-            {
-                style =
-                {
-                    backgroundColor = new StyleColor(color),
-                    width = 10,
-                    height = 10,
-                    alignSelf = Align.Center,
-                    flexGrow = 0,
-                    borderBottomLeftRadius = 5,
-                    borderBottomRightRadius = 5,
-                    borderTopLeftRadius = 5,
-                    borderTopRightRadius = 5
-                }
-            };
-            knobContainer.Add(knob);
-            item.Add(knobContainer);
-            item.Add(labelContainer);
-            labelContainer.Add(new Label(name));
-
-            Add(item);
+            styleSheets.Add(NodeGraphSettings.GetOrCreateSettings().blackBoardItemStyle);
         }
 
-        internal void Bind(SerializedNodeGraph serializer) {
-            Clear();
+        private void CreateBlackboardItemView(BlackboardItem item, VisualTreeAsset treeAsset)
+        {
+            var newItem = new VisualElement
+            {
+                name = "BlackboardItemView",
+            };
+            treeAsset.CloneTree(newItem);
+            
+            var label = newItem.Q<Label>("itemName");
+            label.text = item.Id;
 
-            var blackboardProperty = serializer.Blackboard;
-            blackboardProperty.isExpanded = true;
-            var field = new PropertyField();
-            field.BindProperty(blackboardProperty);
-            Add(field);
+            var typeLabel = newItem.Q<Label>("type-label");
+            typeLabel.text = item.type.ToString();
+
+            var knob = newItem.Q<VisualElement>("blackboardknob");
+            knob.style.backgroundColor = Color.green;
+
+            newItem.RegisterCallback<PointerDownEvent>(evt => OnItemDrag(evt, item, newItem));
+
+            contentContainer.Add(newItem);
+        }
+
+        private void OnItemDrag(PointerDownEvent evt, BlackboardItem item, VisualElement view)
+        {
+            var newItem = new VisualElement
+            {
+                name = "BlackboardItemView",
+                style = { position = Position.Absolute}
+            };
+            var blackboardView = NodeGraphSettings.GetOrCreateSettings().blackBoardItemXml;
+            blackboardView.CloneTree(newItem);
+            
+            var label = newItem.Q<Label>("itemName");
+            label.text = item.Id;
+
+            var typeLabel = newItem.Q<Label>("type-label");
+            typeLabel.text = item.type.ToString();
+
+            var knob = newItem.Q<VisualElement>("blackboardknob");
+            knob.style.backgroundColor = Color.green;
+
+            newItem.transform.position = view.worldTransform.GetPosition() - new Vector3(0,view.worldBound.height,0);;
+
+            rootElement.Add(newItem);
+            var itemDragAndDropManipulator = new ItemDragAndDropManipulator(newItem, evt, item);
+        }
+
+        private void CreateBlackboardItems(Blackboard blackboard)
+        {
+            var blackboardView = NodeGraphSettings.GetOrCreateSettings().blackBoardItemXml;
+            blackboard.items.ForEach(blackboardItem => CreateBlackboardItemView(blackboardItem, blackboardView));
+        }
+
+        private VisualElement rootElement;
+        
+        internal void Bind(Blackboard blackboard, VisualElement root)
+        {
+            rootElement = root;
+            Clear();
+            CreateBlackboardItems(blackboard);
+        }
+    }
+
+    public class ItemDragAndDropManipulator : PointerManipulator
+    {
+        private BlackboardItem item;
+        public ItemDragAndDropManipulator(VisualElement target, PointerDownEvent evt, BlackboardItem item)
+        {
+            this.target = target;
+            root = target.parent;
+            this.item = item;
+
+            targetStartPosition = target.transform.position;
+            pointerStartPosition = evt.position;
+            target.CapturePointer(evt.pointerId);
+            enabled = true;
+        }
+        protected override void RegisterCallbacksOnTarget()
+        {
+            target.RegisterCallback<PointerMoveEvent>(PointerMoveHandler);
+            target.RegisterCallback<PointerUpEvent>(PointerUpHandler);
+            target.RegisterCallback<PointerCaptureOutEvent>(PointerCaptureOutHandler);
+        }
+
+        protected override void UnregisterCallbacksFromTarget()
+        {
+            target.UnregisterCallback<PointerMoveEvent>(PointerMoveHandler);
+            target.UnregisterCallback<PointerUpEvent>(PointerUpHandler);
+            target.UnregisterCallback<PointerCaptureOutEvent>(PointerCaptureOutHandler);
+        }
+        
+        private Vector2 targetStartPosition { get; set; }
+
+        private Vector3 pointerStartPosition { get; set; }
+
+        private bool enabled { get; set; }
+
+        private VisualElement root { get; }
+        
+        
+        private void PointerMoveHandler(PointerMoveEvent evt)
+        {
+            if (!enabled || !target.HasPointerCapture(evt.pointerId)) return;
+
+            var pointerDelta = evt.position - pointerStartPosition;
+            target.transform.position = new Vector2(
+                Mathf.Clamp(targetStartPosition.x + pointerDelta.x, 0, target.panel.visualTree.worldBound.width),
+                Mathf.Clamp(targetStartPosition.y + pointerDelta.y, 0, target.panel.visualTree.worldBound.height));
+        }
+
+        private void PointerUpHandler(PointerUpEvent evt)
+        {
+            if (enabled && target.HasPointerCapture(evt.pointerId))
+            {
+                var graphContainer = root.panel.visualTree.Q<NodeGraphView>();
+
+                if (IsInside(graphContainer.worldBound, target.worldBound))
+                {
+                    graphContainer.CreateBlackboardNode(item, target.worldBound.position);
+                }
+                
+                target.ReleasePointer(evt.pointerId);
+                root.Remove(target);
+            }
+        }
+
+        private bool IsInside(Rect box, Rect other)
+        {
+            return box.Contains(other.max - other.size/2) && box.Contains(other.min + other.size/2);
+        }
+        
+        private void PointerCaptureOutHandler(PointerCaptureOutEvent evt)
+        {
+            if (enabled)
+            {
+                enabled = false;
+                root.Remove(target);
+            }
         }
     }
 }
