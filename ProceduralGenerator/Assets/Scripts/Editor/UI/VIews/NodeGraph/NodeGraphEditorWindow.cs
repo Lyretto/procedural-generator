@@ -15,9 +15,6 @@ namespace Lyred
         NodeGraphView treeView;
         InspectorView inspectorView;
         BlackboardGraphView _blackboardGraphView;
-
-        private ScrollView blackboardItemPopup;
-        //OverlayView overlayView;
         ToolbarMenu toolbarMenu;
         private Button blackboardAddButton;
         Label titleLabel;
@@ -57,10 +54,8 @@ namespace Lyred
             inspectorView = root.Q<InspectorView>();
             _blackboardGraphView = root.Q<BlackboardGraphView>();
             toolbarMenu = root.Q<ToolbarMenu>();
-           // overlayView = root.Q<OverlayView>("OverlayView");
             titleLabel = root.Q<Label>("TitleLabel");
             blackboardAddButton = root.Q<Button>("add-blackboard-item");
-            blackboardItemPopup = root.Q<ScrollView>("item-popup");
             
             toolbarMenu.RegisterCallback<MouseEnterEvent>((evt) => {
                 toolbarMenu.menu.MenuItems().Clear();
@@ -77,7 +72,6 @@ namespace Lyred
             });
             treeView.OnNodeSelected = OnNodeSelectionChanged;
             treeView.OnNodeDeselected = _ => OnNodeSelectionChanged(null);
-            //overlayView.OnTreeSelected += SelectTree;
             Undo.undoRedoPerformed += OnUndoRedo;
 
             SelectTree(serializer?.graph);
@@ -115,13 +109,15 @@ namespace Lyred
         private void OnSelectionChange()
         {
             var activeObject = Selection.activeGameObject;
+            
             if (serializer != null && (!activeObject || activeObject != serializer.graph.parentObject))
             {
                 if(!serializer.graph.parentObject) return; // && !activeObject)
+                /*
                 foreach (Transform t in serializer.graph.parentObject.transform)
                 {
                     DestroyImmediate(t.gameObject);
-                }
+                }*/
                 SelectTree(null);
             }
 
@@ -138,6 +134,7 @@ namespace Lyred
         private void SelectTree(NodeGraph newTree) {
             if (!newTree) {
                 ClearSelection();
+                _blackboardGraphView.Clear();
                 return;
             }
 
@@ -152,7 +149,7 @@ namespace Lyred
             }
             treeView?.PopulateView(serializer);
             
-            _blackboardGraphView.Bind(newTree.blackboard, rootVisualElement);
+            _blackboardGraphView.Bind(serializer.graph.blackboard, rootVisualElement);
 
             blackboardAddButton.clickable.clicked += () => {
                 var popup = new GenericMenu();
@@ -162,7 +159,8 @@ namespace Lyred
                     var menuItem = new GUIContent(value.ToString());
                     popup.AddItem(menuItem, false, () =>
                     {
-                        serializer.graph.blackboard.AddItem(value.ToString(), default, value);
+                        var item = serializer.graph.blackboard.AddItem(value.ToString(), default, value);
+                        serializer.AddBlackboardItem(item);
                         _blackboardGraphView.Bind(serializer.graph.blackboard, rootVisualElement);
                     });
                 }

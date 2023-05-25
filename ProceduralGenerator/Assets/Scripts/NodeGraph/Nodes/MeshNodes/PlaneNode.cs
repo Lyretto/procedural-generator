@@ -33,7 +33,7 @@ namespace Lyred
 
             for (int ti = 0, vi = 0, y = 0; y < segments; y++, vi++)
             {
-                for (int x = 0; x < segments; x++, ti += 6, vi++)
+                for (var x = 0; x < segments; x++, ti += 6, vi++)
                 {
                     triangles[ti] = vi;
                     triangles[ti + 1] = vi + segments + 1;

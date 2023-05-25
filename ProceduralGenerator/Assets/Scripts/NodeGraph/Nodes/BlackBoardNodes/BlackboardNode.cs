@@ -6,7 +6,7 @@ namespace Lyred
     public class BlackboardNode : Node
     {
         [SerializeReference] private NodeSlot outputSlot;
-        private string blackboardItemId;
+        [SerializeReference] private string blackboardItemId;
 
         public override object GetResult()
         {

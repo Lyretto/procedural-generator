@@ -1,4 +1,3 @@
-using System.Linq;
 using Lyred;
 using UnityEngine;
 
@@ -20,8 +19,16 @@ public class MeshComponentNode : ObjectNodeBase
     public override object GetResult()
     {
         var gameObject = (GameObject) gameObjectSlot.InvokeNode();
-        gameObject.AddComponent<MeshRenderer>();
-        var meshFilter = gameObject.AddComponent<MeshFilter>();
+
+        if (!gameObject) return null;
+        
+        if(!gameObject.TryGetComponent<MeshRenderer>(out _)) gameObject.AddComponent<MeshRenderer>();
+        
+        if (!gameObject.TryGetComponent(out MeshFilter meshFilter))
+        {
+           meshFilter = gameObject.AddComponent<MeshFilter>();
+        }
+
         meshFilter.mesh = (Mesh)meshSlot.InvokeNode();
         
         return gameObject;

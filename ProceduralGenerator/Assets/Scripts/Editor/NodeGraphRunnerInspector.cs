@@ -16,25 +16,30 @@ namespace Lyred
 
         public override void OnInspectorGUI()
         {
-            if (GUILayout.Button("Generate"))
+            if (runner && runner.graph)
             {
-                runner.graph.Generate(runner.gameObject);
-            }
+                
+                if (GUILayout.Button("Generate"))
+                {
+                    runner.graph.Generate(runner.gameObject);
+                }
 
-            BlackBoardItems();
-            
+                BlackBoardItems();
+            }
             base.OnInspectorGUI();
         }
 
         private void BlackBoardItems()
         {
+            if (!runner || !runner.graph) return;
+        
             EditorGUILayout.Separator();
             GUILayout.Label("Blackboard");
             foreach (var blackboardItem in runner.graph.blackboard.items)
             {
                 GUILayout.BeginHorizontal("box");
                 GUILayout.Label(blackboardItem.Id);
-                blackboardItem.Value = blackboardItem.type switch
+                var newValue = blackboardItem.type switch
                 {
                     ItemType.Int => EditorGUILayout.IntField(blackboardItem.GetValue() is int intValue ? intValue : 0),
                     ItemType.Bool => EditorGUILayout.Toggle(blackboardItem.GetValue() is bool),
@@ -47,7 +52,10 @@ namespace Lyred
                     ItemType.Float => EditorGUILayout.FloatField(blackboardItem.GetValue() is float floatValue ? floatValue : 0),
                     _ => blackboardItem.GetValue()
                 };
+
+                if (!Equals(newValue, blackboardItem.Value)) blackboardItem.Value = newValue;
                 GUILayout.EndHorizontal();
+                
             }
             EditorGUILayout.Separator();
         }

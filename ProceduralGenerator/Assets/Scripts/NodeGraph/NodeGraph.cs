@@ -7,9 +7,9 @@ namespace Lyred
     public class NodeGraph : ScriptableObject {
 
         [SerializeReference] public Node rootNode;
-        [HideInInspector] public Node currentNode;
+        public Node currentNode;
         [SerializeReference] public List<Node> nodes = new ();
-        [SerializeReference] public Blackboard blackboard = new ();
+        public Blackboard blackboard = new ();
         [HideInInspector] public GameObject parentObject;
         [HideInInspector] public Vector3 viewPosition = new (600, 300);
         [HideInInspector]  public Vector3 viewScale = Vector3.one;
@@ -48,6 +48,14 @@ namespace Lyred
 
         public NodeGraph Clone() {
             return Instantiate(this);
+        }
+
+        public void Bind()
+        {
+            foreach (var node in nodes)
+            {
+                node.blackboard = blackboard;
+            }
         }
     }
 }

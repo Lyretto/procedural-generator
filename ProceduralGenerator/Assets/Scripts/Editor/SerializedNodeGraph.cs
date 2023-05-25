@@ -22,10 +22,18 @@ namespace Lyred {
             this.graph = graph;
         }
 
-        public void Save() {
+        private void Save() {
+
             serializedObject.ApplyModifiedProperties();
         }
 
+        public void AddBlackboardItem(BlackboardItem item)
+        {
+            var newNode = AppendArrayElement(serializedObject.FindProperty("blackboard.items"));
+            newNode.managedReferenceValue = item;
+            Save();
+        }
+        
         public static SerializedProperty FindNode(SerializedProperty array, Node node) {
             for(var i = 0; i < array.arraySize; ++i) {
                 var current = array.GetArrayElementAtIndex(i);
@@ -40,13 +48,13 @@ namespace Lyred {
         public void SetViewTransform(Vector3 position, Vector3 scale) {
             serializedObject.FindProperty(sViewTransformPosition).vector3Value = position;
             serializedObject.FindProperty(sViewTransformScale).vector3Value = scale;
-            serializedObject.ApplyModifiedProperties();
+            Save();
         }
 
         public void SetNodePosition(Node node, Vector2 position) {
             var nodeProp = FindNode(Nodes, node);
             nodeProp.FindPropertyRelative(sPropPosition).vector2Value = position;
-            serializedObject.ApplyModifiedProperties();
+            Save();
         }
 
         private void DeleteNode(SerializedProperty array, Node node) {
@@ -77,14 +85,22 @@ namespace Lyred {
             var newNode = AppendArrayElement(Nodes);
             newNode.managedReferenceValue = node;
 
-            serializedObject.ApplyModifiedProperties();
+            Save();
 
+            return node;
+        }
+
+        public Node UpdateNode(Node node)
+        {
+            var nodeProperty = FindNode(Nodes, node);
+            nodeProperty.managedReferenceValue = node;
+            Save();
             return node;
         }
 
         public void SetRootNode(RootNode node) {
             RootNode.managedReferenceValue = node;
-            serializedObject.ApplyModifiedProperties();
+            Save();
         }
 
         public void DeleteNode(Node node) {
@@ -94,7 +110,7 @@ namespace Lyred {
                 var prop = nodesProperty.GetArrayElementAtIndex(i);
                 var guid = prop.FindPropertyRelative(nameof(node.guid).ToLower()).stringValue;
                 DeleteNode(Nodes, node);
-                serializedObject.ApplyModifiedProperties();
+                Save();
             }
         }
 
@@ -115,7 +131,7 @@ namespace Lyred {
                 current.FindPropertyRelative(nameof(childSLot.parentNodeSlot)).managedReferenceValue = parentSlot;
                 return true;
             }
-            serializedObject.ApplyModifiedProperties();
+            Save();
             return false;
         }
 
@@ -132,8 +148,7 @@ namespace Lyred {
                 current.FindPropertyRelative("parentNodeSlot").managedReferenceValue = null;
                 return;
             }
-            
-            serializedObject.ApplyModifiedProperties();
+            Save();
         }
     }
 }

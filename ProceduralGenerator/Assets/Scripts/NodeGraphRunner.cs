@@ -9,6 +9,7 @@ namespace Lyred
         private void Start() 
         {
             graph = graph.Clone();
+            graph.Bind();
             if(graph) graph.Generate(gameObject);
         }
 

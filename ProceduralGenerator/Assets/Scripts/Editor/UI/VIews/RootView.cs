@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Lyred {
-    public class RootView : VisualElement 
+public class RootView : VisualElement 
 {
         public new class UxmlFactory : UxmlFactory<RootView, UxmlTraits> { }
 
@@ -34,5 +34,5 @@ namespace Lyred {
             }
             return paths;
         }
-} 
+    } 
 }

@@ -150,13 +150,15 @@ namespace Lyred {
         }
 
         public void CreateBlackboardNode(BlackboardItem item, Vector2 position)
-        { 
-            var node = serializer.CreateNode(typeof(BlackboardNode), position) as BlackboardNode;
+        {
+            var localPosition = this.ChangeCoordinatesTo(contentViewContainer, position);
+            var node = serializer.CreateNode(typeof(BlackboardNode), localPosition) as BlackboardNode;
             node!.blackboard = serializer.graph.blackboard;
             node.SetItem(item.id);
             CreateNodeView(node);
+            serializer.UpdateNode(node);
         }
-        
+
         private void CreateNode(Type type, Vector2 position) {
             var node = serializer.CreateNode(type, position);
             CreateNodeView(node);

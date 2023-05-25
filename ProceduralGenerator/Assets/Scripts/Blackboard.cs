@@ -7,23 +7,24 @@ namespace Lyred
     [Serializable]
     public class Blackboard
     {
-        [SerializeReference]
-        public List<BlackboardItem> items = new ();
+        [SerializeReference] public List<BlackboardItem> items = new ();
 
-        public void AddItem(string name, object defaultValue, ItemType type)
+        public BlackboardItem AddItem(string name, object defaultValue, ItemType type)
         {
-            items.Add(new BlackboardItem(name, defaultValue, type));
+            var item = new BlackboardItem(name, defaultValue, type);
+            items.Add(item);
+            return item;
         }
     }
 
     [Serializable]
     public class BlackboardItem
     {
-        public string Id;
-        public string id;
+        [SerializeReference] public string Id;
+        [SerializeReference]  public string id;
         public object Value;
         public object DefaultValue;
-        public ItemType type;
+        [SerializeReference] public ItemType type;
 
         public BlackboardItem(string name, object value, ItemType type)
         {

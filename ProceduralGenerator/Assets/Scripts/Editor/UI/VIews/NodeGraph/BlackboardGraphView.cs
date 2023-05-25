@@ -55,13 +55,16 @@ namespace Lyred {
             newItem.transform.position = view.worldTransform.GetPosition() - new Vector3(0,view.worldBound.height,0);;
 
             rootElement.Add(newItem);
+            
             var itemDragAndDropManipulator = new ItemDragAndDropManipulator(newItem, evt, item);
         }
 
+        private Blackboard blackboard;
         private void CreateBlackboardItems(Blackboard blackboard)
         {
             var blackboardView = NodeGraphSettings.GetOrCreateSettings().blackBoardItemXml;
             blackboard.items.ForEach(blackboardItem => CreateBlackboardItemView(blackboardItem, blackboardView));
+            this.blackboard = blackboard;
         }
 
         private VisualElement rootElement;
@@ -123,18 +126,17 @@ namespace Lyred {
 
         private void PointerUpHandler(PointerUpEvent evt)
         {
-            if (enabled && target.HasPointerCapture(evt.pointerId))
-            {
-                var graphContainer = root.panel.visualTree.Q<NodeGraphView>();
+            if (!enabled || !target.HasPointerCapture(evt.pointerId)) return;
+            
+            var graphContainer = root.panel.visualTree.Q<NodeGraphView>();
 
-                if (IsInside(graphContainer.worldBound, target.worldBound))
-                {
-                    graphContainer.CreateBlackboardNode(item, target.worldBound.position);
-                }
-                
-                target.ReleasePointer(evt.pointerId);
-                root.Remove(target);
+            if (IsInside(graphContainer.worldBound, target.worldBound))
+            {
+                graphContainer.CreateBlackboardNode(item,  evt.position + new Vector3(-200,0,-100));
             }
+                
+            target.ReleasePointer(evt.pointerId);
+            root.Remove(target);
         }
 
         private bool IsInside(Rect box, Rect other)

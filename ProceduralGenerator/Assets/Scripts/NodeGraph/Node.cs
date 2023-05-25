@@ -16,7 +16,7 @@ namespace Lyred
 
         public bool drawGizmos;
         [HideInInspector] public State state = State.Running;
-        [HideInInspector] public Blackboard blackboard;
+        [SerializeReference] public Blackboard blackboard;
         [HideInInspector] public string guid = Guid.NewGuid().ToString();
         [HideInInspector] public Vector2 position;
         [HideInInspector] public GameObject parentObject;
