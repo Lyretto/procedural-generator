@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8177c1511524c444a9b231d760ce2836, type: 3}
+  m_Name: New Behaviour Tree
+  m_EditorClassIdentifier: 
+  rootNode:
+    rid: -2
+  nodes:
+  - rid: 8768668556432507358
+  - rid: 8768668556432507365
+  blackboard:
+    items:
+    - rid: 8768668556432507363
+  parentObject: {fileID: 0}
+  viewPosition: {x: 357.5, y: 288, z: 0}
+  viewScale: {x: 0.57175326, y: 0.57175326, z: 1}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 8768668556432507358
+      type: {class: EmptyGameObject, ns: Lyred, asm: Assembly-CSharp}
+      data:
+        drawGizmos: 0
+        state: 0
+        blackboard:
+          rid: -2
+        guid: 120a6a332a694405999343a2afcfc7a1
+        position: {x: -526, y: -114}
+        parentObject: {fileID: 0}
+        inputPorts:
+        - rid: 8768668556432507359
+        - rid: 8768668556432507360
+        outputPorts:
+        - rid: 8768668556432507361
+        dirty: 0
+        objectSlot:
+          rid: 8768668556432507361
+        pathSlot:
+          rid: 8768668556432507359
+        parentSlot:
+          rid: 8768668556432507360
+    - rid: 8768668556432507359
+      type: {class: NodeSlot, ns: Lyred, asm: Assembly-CSharp}
+      data:
+        guid: d0dd9d89-9e44-4057-b140-00cd6e020a47
+        name: Path
+        slotTypeName: string
+        node:
+          rid: 8768668556432507358
+        parentNodeSlot:
+          rid: -2
+    - rid: 8768668556432507360
+      type: {class: NodeSlot, ns: Lyred, asm: Assembly-CSharp}
+      data:
+        guid: 94c18cd9-02cf-40d9-934a-6373c85a01cf
+        name: Parent
+        slotTypeName: GameObject
+        node:
+          rid: 8768668556432507358
+        parentNodeSlot:
+          rid: 8768668556432507367
+    - rid: 8768668556432507361
+      type: {class: NodeSlot, ns: Lyred, asm: Assembly-CSharp}
+      data:
+        guid: a0fd3d56-ed87-4662-9904-9c503d8c5117
+        name: GameObject
+        slotTypeName: GameObject
+        node:
+          rid: 8768668556432507358
+        parentNodeSlot:
+          rid: -2
+    - rid: 8768668556432507363
+      type: {class: BlackboardItem, ns: Lyred, asm: Assembly-CSharp}
+      data:
+        Id: GameObject
+        id: f3233c54-bf35-4720-bfb0-75b48633802f
+        type: 6
+    - rid: 8768668556432507365
+      type: {class: BlackboardNode, ns: Lyred, asm: Assembly-CSharp}
+      data:
+        drawGizmos: 0
+        state: 0
+        blackboard:
+          rid: 8768668556432507366
+        guid: fa20977265ee748049c4e153b4d3881f
+        position: {x: -754.9, y: -90}
+        parentObject: {fileID: 0}
+        inputPorts: []
+        outputPorts:
+        - rid: 8768668556432507367
+        dirty: 0
+        outputSlot:
+          rid: 8768668556432507367
+        blackboardItemId: f3233c54-bf35-4720-bfb0-75b48633802f
+    - rid: 8768668556432507366
+      type: {class: Blackboard, ns: Lyred, asm: Assembly-CSharp}
+      data:
+        items:
+        - rid: 8768668556432507363
+    - rid: 8768668556432507367
+      type: {class: NodeSlot, ns: Lyred, asm: Assembly-CSharp}
+      data:
+        guid: a9aa05d3-5347-4a0d-ac36-4237938794a5
+        name: GameObject
+        slotTypeName: GameObject
+        node:
+          rid: 8768668556432507365
+        parentNodeSlot:
+          rid: -2

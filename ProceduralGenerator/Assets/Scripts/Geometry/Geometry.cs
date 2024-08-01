@@ -43,6 +43,13 @@ public class Geometry
         return geometry;
     }
 
+    public static GeometryData Merge(params GeometryData[] geoToMerge)
+    {
+        var geo = new GeometryData();
+        return geo;
+    }
+    
+
     public static Mesh GeometryToMesh(GeometryData geometryData)
     {
         var mesh = new Mesh();
@@ -60,6 +67,7 @@ public class Geometry
             triangles.AddRange(triangle.GetVertices().Select(t => t.index));
         }
 
+        mesh.vertices = geometryData.Vertices.Select(v => v.position).ToArray();
         mesh.triangles = triangles.ToArray();
 
         return mesh;
