@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 using UnityEngine.ProBuilder.MeshOperations;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 public class GroundGenerator : MonoBehaviour
@@ -15,7 +16,7 @@ public class GroundGenerator : MonoBehaviour
     public Texture2D coastTexture;
     public Vector2 grassTiling = new Vector2(1, 1);
     public Vector2 coastTiling = new Vector2(1, 1);
-    private int _segments = 13;
+    private int _segments = 4;
     private float offsetRange = 0.1f;
 
     private GameObject ground;
@@ -36,8 +37,6 @@ public class GroundGenerator : MonoBehaviour
             _segments++;
             GenerateGroundWithProBuilder();
         }
-        
-        
     }
 
     void Start()
@@ -55,8 +54,6 @@ public class GroundGenerator : MonoBehaviour
             new Vector2Int(2, 2),
             new Vector2Int(0, 3),
             new Vector2Int(1, 3),
-            
-            // Add more positions as needed
         };
 
         GenerateGroundWithProBuilder();
@@ -98,22 +95,22 @@ public class GroundGenerator : MonoBehaviour
         
         var strength = 0.1f;
         Dictionary<Edge, Vector3> lastExtruded = null;
-            
-        for (int i = 0; i < _segments; i++)
+        
+        for (var i = 0; i < _segments; i++)
         {
-            var offset = i > _segments/2 ? new Vector3(0,-.5f/i,0) : new Vector3(0,-1f * i/_segments,0);
+            pbMesh.WeldVertices(pbMesh.positions.Select((p, index) => index), 0.1f);
+            var offset = i > _segments/2 ? new Vector3(0,-.5f/i,0) : new Vector3(0,-1f * (1+i)/_segments,0);
             debugPoints.Add(Random.ColorHSV(), new List<Vector3>());
             lastExtruded = ExtrudeFaces(pbMesh, offset, new Vector3(1f * (i+1)/_segments,0,1f * (i+1)/_segments), strength, lastExtruded);
         }
         
         pbMesh.GetComponent<Renderer>().sharedMaterial = grass;
-        
+
         Noise(pbMesh);
+        Smoothing.ApplySmoothingGroups(pbMesh, pbMesh.faces, 180);
         
         pbMesh.ToMesh();
         pbMesh.Refresh();
-
-  
     }
 
     private void Noise(ProBuilderMesh pbMesh)
@@ -124,57 +121,41 @@ public class GroundGenerator : MonoBehaviour
         foreach (var position in verts)
         {
             var randomOffset = new Vector3(
-                0f,//Random.Range(-offsetRange, offsetRange),
-                0f,//Random.Range(0, offsetRange),
-                0f//Random.Range(-offsetRange, offsetRange)
+                Random.Range(-offsetRange, offsetRange),
+                Random.Range(0, offsetRange),
+                Random.Range(-offsetRange, offsetRange)
             );
 
-            var pos = position.ToList().First().Value + randomOffset;
-            pbMesh.TranslateVertices(position.ToList().Select(v => v.Key).ToArray(), pos);
+            //var pos = position.ToList().First().Value + ;
+            pbMesh.TranslateVertices(position.ToList().Select(v => v.Key).ToArray(), randomOffset);
         }
     }
-    
-    private Dictionary<Edge, Vector3> ExtrudeFaces(ProBuilderMesh pbMesh, Vector3 offset, Vector3 directionConstraint, float strength, Dictionary<Edge, Vector3> lastExtruded = null) 
+
+    private Dictionary<Edge, Vector3> ExtrudeFaces(ProBuilderMesh pbMesh, Vector3 offset, Vector3 directionConstraint,
+        float strength, Dictionary<Edge, Vector3> lastExtruded = null)
     {
         var edgesWithDirection = new Dictionary<Edge, Vector3>();
-        
         if (lastExtruded == null)
         {
-
             var umschlosseneVerticies = new List<int>();
-
             foreach (var group in pbMesh.positions.Select((p, index) => new { Index = index, Position = p })
                          .ToDictionary(p => p.Index, p => p.Position).GroupBy(v => (v.Value.x, v.Value.y, v.Value.z)))
             {
-                if (group.Count() < 4)
-                {
-
-                }
-                else
+                if (group.Count() >= 4)
                 {
                     //Debug.Log(group.Key  + " Found Verticies:" + group.Count());
                     debugPoints.Last().Value.AddRange(group.Select(g => g.Value));
                     umschlosseneVerticies.AddRange(group.ToList().Select(v => v.Key));
                 }
-
-                //var indices = group.Select(v => v.Key).ToList();
-                //Debug.Log(string.Join(", ", indices));
-                //pbMesh.MergeVertices(indices.ToArray());
             }
-
-
-            //pbMesh.DeleteFaces(pbMesh.faces.Where(f => f.indexes.All(i => umschlosseneVerticies.Contains(i))));
-            //pbMesh.DeleteVertices(umschlosseneVerticies.Distinct().ToList());
-            //umschlosseneVerticies.Clear();
-            pbMesh.Refresh();
+            //pbMesh.Refresh();
 
             foreach (var face in pbMesh.faces.ToList())
             {
                 var perEdges = pbMesh.GetPerimeterEdges(new List<Face> { face });
                 var newEdges = pbMesh.Extrude(perEdges.Where(e => !umschlosseneVerticies.Any(u => e.Contains(u))), 0f,
                     false, true);
-
-
+                
                 if (newEdges != null)
                 {
                     foreach (var edge in newEdges)
@@ -189,9 +170,9 @@ public class GroundGenerator : MonoBehaviour
         {
             foreach (var edgeWithDirection in lastExtruded)
             {
-                var newEdges = pbMesh.Extrude(new []{edgeWithDirection.Key}, 0f,
-                    false, true);
-                
+                var newEdges = pbMesh.Extrude(new[] { edgeWithDirection.Key }, 0f,
+                    true, false);
+
                 if (newEdges != null)
                 {
                     foreach (var edge in newEdges)
@@ -201,10 +182,7 @@ public class GroundGenerator : MonoBehaviour
                 }
             }
         }
-
-        pbMesh.SetSelectedEdges(edgesWithDirection.Keys);
-        //debugPoints.Last().Value.AddRange(edgesWithDirection.Keys.SelectMany(e => new List<int>(){e.a,e.b}).Select(v => pbMesh.positions[v]));
-
+        
         foreach (var edge in edgesWithDirection)
         {
             var connectedVertices = edgesWithDirection.SelectMany(e =>
@@ -214,21 +192,20 @@ public class GroundGenerator : MonoBehaviour
             
             var randomOffset = new Vector3(
                 Random.Range(-offsetRange, offsetRange),
-                Random.Range(0, offsetRange),
+                Random.Range(-offsetRange, offsetRange),
                 Random.Range(-offsetRange, offsetRange)
             );
             
             //pbMesh.TranslateVertices(connectedVertices, ElementWiseMultiply(directionConstraint, edge.Value).normalized * strength + offset);
             pbMesh.TranslateVertices(connectedVertices,
-                (ElementWiseMultiply(directionConstraint, edge.Value).normalized) * (strength + Random.Range(0, offsetRange)));
+                (ElementWiseMultiply(directionConstraint, randomOffset + edge.Value).normalized) * (strength + Random.Range(0, offsetRange)));
         }
 
         foreach (var edge in edgesWithDirection)
         {
             pbMesh.TranslateVertices(new[] { edge.Key }, offset);
         }
-
-
+        
         return edgesWithDirection;
     }
     
